@@ -18,10 +18,15 @@ nav:
   fixed: false
 
 menu:
-  # Home: / || fas fa-home
-  # List||fas fa-list:
-  #   Music: /music/ || fas fa-music
-  #   Movie: /movies/ || fas fa-video
+  主页: / || fas fa-home
+  博文 || fa fa-graduation-cap:
+    分类: /categories/ || fa fa-archive
+    标签: /tags/ || fa fa-tags
+    归档: /archives/ || fa fa-folder-open
+  友链: /links/ || fa fa-link
+  留言板: /comment/ || fa fa-paper-plane
+  #留言板: /messageboard/ || fa fa-paper-plane
+  关于笔者: /about/ || fas fa-heart 
 
 # --------------------------------------
 # Code Blocks Settings
@@ -53,26 +58,26 @@ social:
 # Image Settings
 # --------------------------------------
 
-favicon: /img/favicon.png
+favicon: /img/favion.png
 
 avatar:
-  img: /img/butterfly-icon.png
+  img: /img/avatar.png
   effect: false
 
 # Disable all banner images
 disable_top_img: false
 
 # If the banner of page not setting, it will show the default_top_img
-default_top_img:
+default_top_img: /img/fengmian.png
 
 # The banner image of index page
-index_img:
+index_img: /img/fengmian.png
 
 # The banner image of archive page
 archive_img:
 
 # Note: tag page, not tags page
-tag_img:
+tag_img: /img/tag.png
 
 # The banner image of tag page, you can set the banner image for each tag
 # Format:
@@ -80,7 +85,7 @@ tag_img:
 tag_per_img:
 
 # Note: category page, not categories page
-category_img:
+category_img: /img/tag.png
 
 # The banner image of category page, you can set the banner image for each category
 # Format:
@@ -144,16 +149,17 @@ post_meta:
 # The position of site info, eg: 300px/300em/300rem/10%
 index_site_info_top:
 # The height of top_img, eg: 300px/300em/300rem
-index_top_img_height:
+index_top_img_height: 400px # 顶部图片的高度
 
 # The subtitle on homepage
 subtitle:
-  enable: false
+  enable: true
   # Typewriter Effect
   effect: true
   # Customize typed.js
   # https://github.com/mattboldt/typed.js/#customization
   typed_option:
+  loop: true
   # Source - Call the third-party service API (Chinese only)
   # It will show the source first, then show the content of sub
   # Choose: false/1/2/3
@@ -164,6 +170,8 @@ subtitle:
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
+    - 自小刺头深草里
+    - 时人不识凌云木
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -199,7 +207,7 @@ toc:
   scroll_percent: true
 
 post_copyright:
-  enable: true
+  enable: false
   decode: false
   author_href:
   license: CC BY-NC-SA 4.0
@@ -257,12 +265,12 @@ noticeOutdate:
 footer:
   nav:
   owner:
-    enable: true
+    enable: false
     since: 2025
   # Copyright of theme and framework
   copyright:
-    enable: true
-    version: true
+    enable: false
+    version: false
   custom_text:
 
 # --------------------------------------
@@ -282,7 +290,7 @@ aside:
     tag: true
     category: true
   card_author:
-    enable: true
+    enable: false
     description:
     # button:
     #   enable: true
@@ -291,7 +299,7 @@ aside:
     #   link: https://github.com/xxxxxx
   card_announcement:
     enable: true
-    content: This is my Blog
+    content: why join the navy if you can be a pirate
   card_recent_post:
     enable: true
     # If set 0 will show all
@@ -350,7 +358,7 @@ aside:
     # Time difference between publish date and now
     # Formal: Month/Day/Year Time or Year/Month/Day Time
     # Leave it empty if you don't enable this feature
-    runtime_date:
+    runtime_date: 1/4/2021 00:00:00
 
 # --------------------------------------
 # Bottom right button
@@ -427,7 +435,7 @@ copy:
 
 # Need to install the hexo-wordcount plugin
 wordcount:
-  enable: false
+  enable: true
   # Display the word count of the article in post meta
   post_wordcount: true
   # Display the time to read the article in post meta
@@ -437,9 +445,9 @@ wordcount:
 
 # Busuanzi count for PV / UV in site
 busuanzi:
-  site_uv: true
-  site_pv: true
-  page_pv: true
+  site_uv: false
+  site_pv: false
+  page_pv: false
 
 # --------------------------------------
 # Math
