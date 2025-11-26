@@ -1,0 +1,179 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>AgentScope源码学习 | 大潘子的文字角落</title><meta name="author" content="Pan"><meta name="copyright" content="Pan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="AgentScope (阿里的) https:&#x2F;&#x2F;github.com&#x2F;agentscope-ai&#x2F;agentscope  记忆长期记忆部分使用了mem0这个工具，当然，代码里面也提到了，可以使用阿里自家的ReMe这个记忆框架 Agent这一块儿使用的是基本的React模式，输出最后的回答，也成了一个工具；多了一个 1234567891011121314### AgentBase# 在AgentB">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AgentScope源码学习">
+<meta property="og:url" content="https://flippy-bird.github.io/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="大潘子的文字角落">
+<meta property="og:description" content="AgentScope (阿里的) https:&#x2F;&#x2F;github.com&#x2F;agentscope-ai&#x2F;agentscope  记忆长期记忆部分使用了mem0这个工具，当然，代码里面也提到了，可以使用阿里自家的ReMe这个记忆框架 Agent这一块儿使用的是基本的React模式，输出最后的回答，也成了一个工具；多了一个 1234567891011121314### AgentBase# 在AgentB">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flippy-bird.github.io/img/avatar.png">
+<meta property="article:published_time" content="2025-11-25T11:47:53.000Z">
+<meta property="article:modified_time" content="2025-11-25T11:49:34.959Z">
+<meta property="article:author" content="Pan">
+<meta property="article:tag" content="Agent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flippy-bird.github.io/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "AgentScope源码学习",
+  "url": "https://flippy-bird.github.io/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/",
+  "image": "https://flippy-bird.github.io/img/avatar.png",
+  "datePublished": "2025-11-25T11:47:53.000Z",
+  "dateModified": "2025-11-25T11:49:34.959Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Pan",
+      "url": "https://flippy-bird.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favion.png"><link rel="canonical" href="https://flippy-bird.github.io/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'AgentScope源码学习',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">2</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/fengmian.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">大潘子的文字角落</span></a><a class="nav-page-title" href="/"><span class="site-name">AgentScope源码学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">AgentScope源码学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-25T11:47:53.000Z" title="发表于 2025-11-25 19:47:53">2025-11-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-25T11:49:34.959Z" title="更新于 2025-11-25 19:49:34">2025-11-25</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Agent%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/">Agent开源项目学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">401</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="AgentScope-阿里的"><a href="#AgentScope-阿里的" class="headerlink" title="AgentScope (阿里的)"></a>AgentScope (阿里的)</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/agentscope-ai/agentscope">https://github.com/agentscope-ai/agentscope</a></p>
+</blockquote>
+<h4 id="记忆"><a href="#记忆" class="headerlink" title="记忆"></a>记忆</h4><p>长期记忆部分使用了mem0这个工具，当然，代码里面也提到了，可以使用阿里自家的ReMe这个记忆框架</p>
+<h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a>Agent</h4><p>这一块儿使用的是基本的React模式，输出最后的回答，也成了一个工具；多了一个</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### AgentBase</span></span><br><span class="line"><span class="comment"># 在AgentBase里面有一个虚函数 reply</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reply</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">### 在ReactAgentBase里面有基本的React框架</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_reasoning</span>()   <span class="comment"># 虚函数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_acting</span>()      <span class="comment"># 虚函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 在ReactAgent里面</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reply</span>():           这里就类似OpenManus里面的step()函数的作用了，从源码来看，逻辑完全一样</span><br><span class="line">    <span class="variable language_">self</span>._reasoning()</span><br><span class="line">    ...</span><br><span class="line">    <span class="variable language_">self</span>._acting()</span><br></pre></td></tr></table></figure>
+
+<p>在Agent里面有一个observe，感觉是为了观察到外界信息准备的接口(用于多Agent之间的信息互动)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">observe</span>(<span class="params">self, msg: Msg | <span class="built_in">list</span>[Msg] | <span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Receive the given message(s) without generating a reply.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        msg (`Msg | list[Msg] | None`):</span></span><br><span class="line"><span class="string">            The message(s) to be observed.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(</span><br><span class="line">        <span class="string">f&quot;The observe function is not implemented in&quot;</span></span><br><span class="line">        <span class="string">f&quot; <span class="subst">&#123;self.__class__.__name__&#125;</span> class.&quot;</span>,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<h4 id="多Agent互动"><a href="#多Agent互动" class="headerlink" title="多Agent互动"></a>多Agent互动</h4><p>在这个框架里面使用的是swarm模式，似乎比较简单，每个agent observe其它agent的输出，添加到自己的记忆里面去就好了</p>
+<p>在src&#x2F;pipeline&#x2F;_msghub.py文件夹里面 （或者见类名时的说明）</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">broadcast</span>(<span class="params">self, msg: <span class="built_in">list</span>[Msg] | Msg</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Broadcast the message to all participants.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        msg (`list[Msg] | Msg`):</span></span><br><span class="line"><span class="string">            Message(s) to be broadcast among all participants.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> agent <span class="keyword">in</span> <span class="variable language_">self</span>.participants:</span><br><span class="line">        <span class="keyword">await</span> agent.observe(msg)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Interrupt-中断介入"><a href="#Interrupt-中断介入" class="headerlink" title="Interrupt(中断介入)"></a>Interrupt(中断介入)</h4><p>这个好像还不错，可以看一下</p>
+<h4 id="Plan的实现"><a href="#Plan的实现" class="headerlink" title="Plan的实现"></a>Plan的实现</h4><p>实现了一些plan的功能函数，然后让Agent去调用和更改当前的plan</p>
+<p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251119115208155.png" alt="image-20251119115208155"></p>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent/">Agent</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width no-desc" href="/2025/11/25/LLM/" title="LLM"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">LLM</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/11/25/mcp%E4%BB%8B%E7%BB%8D/" title="MCP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-25</div><div class="info-item-2">MCP</div></div><div class="info-2"><div class="info-item-1">MCP话不多说，直接上图即可  有MCP和没有MCP的区别，提升了效率  MCP的架构图：主要是由Host、Client和Server三部分组成  个人demo mcp demo  参考资料 MCP (Model Context Protocol)，一篇就够了。 python SDK的官方文档  测试MCP工具接入使用的地址：阿里MCP  </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">why join the navy if you can be a pirate</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#AgentScope-%E9%98%BF%E9%87%8C%E7%9A%84"><span class="toc-number">1.</span> <span class="toc-text">AgentScope (阿里的)</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%B0%E5%BF%86"><span class="toc-number">1.1.</span> <span class="toc-text">记忆</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Agent"><span class="toc-number">1.2.</span> <span class="toc-text">Agent</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9AAgent%E4%BA%92%E5%8A%A8"><span class="toc-number">1.3.</span> <span class="toc-text">多Agent互动</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Interrupt-%E4%B8%AD%E6%96%AD%E4%BB%8B%E5%85%A5"><span class="toc-number">1.4.</span> <span class="toc-text">Interrupt(中断介入)</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Plan%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.5.</span> <span class="toc-text">Plan的实现</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习">AgentScope源码学习</a><time datetime="2025-11-25T11:47:53.000Z" title="发表于 2025-11-25 19:47:53">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/LLM/" title="LLM">LLM</a><time datetime="2025-11-25T08:43:25.000Z" title="发表于 2025-11-25 16:43:25">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/hello-world/" title="Hello World">Hello World</a><time datetime="2025-11-25T07:59:06.847Z" title="发表于 2025-11-25 15:59:06">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/mcp%E4%BB%8B%E7%BB%8D/" title="MCP">MCP</a><time datetime="2025-11-25T06:02:24.000Z" title="发表于 2025-11-25 14:02:24">2025-11-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 By Pan</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.2</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>

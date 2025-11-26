@@ -4,6 +4,44 @@
   
     
     <entry>
+      <title>AgentScope源码学习</title>
+      <link href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/"/>
+      <url>/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/</url>
+      
+        <content type="html"><![CDATA[<h3 id="AgentScope-阿里的"><a href="#AgentScope-阿里的" class="headerlink" title="AgentScope (阿里的)"></a>AgentScope (阿里的)</h3><blockquote><p><a href="https://github.com/agentscope-ai/agentscope">https://github.com/agentscope-ai/agentscope</a></p></blockquote><h4 id="记忆"><a href="#记忆" class="headerlink" title="记忆"></a>记忆</h4><p>长期记忆部分使用了mem0这个工具，当然，代码里面也提到了，可以使用阿里自家的ReMe这个记忆框架</p><h4 id="Agent"><a href="#Agent" class="headerlink" title="Agent"></a>Agent</h4><p>这一块儿使用的是基本的React模式，输出最后的回答，也成了一个工具；多了一个</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">### AgentBase</span></span><br><span class="line"><span class="comment"># 在AgentBase里面有一个虚函数 reply</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reply</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment">### 在ReactAgentBase里面有基本的React框架</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_reasoning</span>()   <span class="comment"># 虚函数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_acting</span>()      <span class="comment"># 虚函数</span></span><br><span class="line"></span><br><span class="line"><span class="comment">### 在ReactAgent里面</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">reply</span>():           这里就类似OpenManus里面的step()函数的作用了，从源码来看，逻辑完全一样</span><br><span class="line">    <span class="variable language_">self</span>._reasoning()</span><br><span class="line">    ...</span><br><span class="line">    <span class="variable language_">self</span>._acting()</span><br></pre></td></tr></table></figure><p>在Agent里面有一个observe，感觉是为了观察到外界信息准备的接口(用于多Agent之间的信息互动)</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">observe</span>(<span class="params">self, msg: Msg | <span class="built_in">list</span>[Msg] | <span class="literal">None</span></span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Receive the given message(s) without generating a reply.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        msg (`Msg | list[Msg] | None`):</span></span><br><span class="line"><span class="string">            The message(s) to be observed.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">raise</span> NotImplementedError(</span><br><span class="line">        <span class="string">f&quot;The observe function is not implemented in&quot;</span></span><br><span class="line">        <span class="string">f&quot; <span class="subst">&#123;self.__class__.__name__&#125;</span> class.&quot;</span>,</span><br><span class="line">    )</span><br></pre></td></tr></table></figure><h4 id="多Agent互动"><a href="#多Agent互动" class="headerlink" title="多Agent互动"></a>多Agent互动</h4><p>在这个框架里面使用的是swarm模式，似乎比较简单，每个agent observe其它agent的输出，添加到自己的记忆里面去就好了</p><p>在src&#x2F;pipeline&#x2F;_msghub.py文件夹里面 （或者见类名时的说明）</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">async</span> <span class="keyword">def</span> <span class="title function_">broadcast</span>(<span class="params">self, msg: <span class="built_in">list</span>[Msg] | Msg</span>) -&gt; <span class="literal">None</span>:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Broadcast the message to all participants.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    Args:</span></span><br><span class="line"><span class="string">        msg (`list[Msg] | Msg`):</span></span><br><span class="line"><span class="string">            Message(s) to be broadcast among all participants.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">for</span> agent <span class="keyword">in</span> <span class="variable language_">self</span>.participants:</span><br><span class="line">        <span class="keyword">await</span> agent.observe(msg)</span><br></pre></td></tr></table></figure><h4 id="Interrupt-中断介入"><a href="#Interrupt-中断介入" class="headerlink" title="Interrupt(中断介入)"></a>Interrupt(中断介入)</h4><p>这个好像还不错，可以看一下</p><h4 id="Plan的实现"><a href="#Plan的实现" class="headerlink" title="Plan的实现"></a>Plan的实现</h4><p>实现了一些plan的功能函数，然后让Agent去调用和更改当前的plan</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251119115208155.png" alt="image-20251119115208155"></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> Agent开源项目学习 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Agent </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>LLM</title>
+      <link href="/2025/11/25/LLM/"/>
+      <url>/2025/11/25/LLM/</url>
+      
+        <content type="html"><![CDATA[]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2025/11/25/hello-world/"/>
       <url>/2025/11/25/hello-world/</url>
