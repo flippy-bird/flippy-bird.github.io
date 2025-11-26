@@ -1,0 +1,192 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>smolagents源码学习 | 大潘子的文字角落</title><meta name="author" content="Pan"><meta name="copyright" content="Pan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="开源项目smolagents源码学习记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="smolagents源码学习">
+<meta property="og:url" content="https://flippy-bird.github.io/2025/11/25/smolagents%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="大潘子的文字角落">
+<meta property="og:description" content="开源项目smolagents源码学习记录">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flippy-bird.github.io/img/avatar.png">
+<meta property="article:published_time" content="2025-11-25T08:43:25.000Z">
+<meta property="article:modified_time" content="2025-11-26T12:53:27.394Z">
+<meta property="article:author" content="Pan">
+<meta property="article:tag" content="Agent">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flippy-bird.github.io/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "smolagents源码学习",
+  "url": "https://flippy-bird.github.io/2025/11/25/smolagents%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/",
+  "image": "https://flippy-bird.github.io/img/avatar.png",
+  "datePublished": "2025-11-25T08:43:25.000Z",
+  "dateModified": "2025-11-26T12:53:27.394Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Pan",
+      "url": "https://flippy-bird.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favion.png"><link rel="canonical" href="https://flippy-bird.github.io/2025/11/25/smolagents%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'smolagents源码学习',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">5</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">3</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/fengmian.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">大潘子的文字角落</span></a><a class="nav-page-title" href="/"><span class="site-name">smolagents源码学习</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">smolagents源码学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-25T08:43:25.000Z" title="发表于 2025-11-25 16:43:25">2025-11-25</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-26T12:53:27.394Z" title="更新于 2025-11-26 20:53:27">2025-11-26</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Agent%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%AD%A6%E4%B9%A0/">Agent开源项目学习</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">570</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/huggingface/smolagents">https://github.com/huggingface/smolagents</a></p>
+</blockquote>
+<h4 id="memory-管理"><a href="#memory-管理" class="headerlink" title="memory 管理"></a>memory 管理</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">AgentMemory</span>:</span><br><span class="line">    <span class="keyword">def</span> <span class="title function_">__init__</span>(<span class="params">self, system_prompt:<span class="built_in">str</span></span>):</span><br><span class="line">        <span class="variable language_">self</span>.system_prompt: SystemPromptStep = SystemPromptStep(system_prompt=system_prompt)</span><br><span class="line">        <span class="variable language_">self</span>.steps: <span class="built_in">list</span>[TaskStep | ActionStep | PlanningStep] = []</span><br></pre></td></tr></table></figure>
+
+<p>将LLM执行过程的信息划分成了四个部分(主要，其它)：</p>
+<p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20250926172929838.png" alt="image-20250926172929838"></p>
+<ul>
+<li>TaskStep: 与用户输入相关 (用户提问，上传图片等)</li>
+<li>SystemPromptStep: 系统的prompt</li>
+<li>PlanningStep: 与规划相关的记忆 (<strong>暂时还没遇到</strong>)</li>
+<li>ActionStep：当前送到LLM进行执行的信息</li>
+</ul>
+<p><strong>历史信息的获取</strong></p>
+<p>所以主要在于上面每种类型记忆数据 <code>to_messages</code>的实现 需要注意的是前后信息的完整性</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># agents.py line:1256</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">_step_stream</span>(<span class="params"></span></span><br><span class="line"><span class="params">        self, memory_step: ActionStep</span></span><br><span class="line"><span class="params">    </span>) -&gt; Generator[ChatMessageStreamDelta | ToolCall | ToolOutput | ActionOutput]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Perform one step in the ReAct framework: the agent thinks, acts, and observes the result.</span></span><br><span class="line"><span class="string">    Yields ChatMessageStreamDelta during the run if streaming is enabled.</span></span><br><span class="line"><span class="string">    At the end, yields either None if the step is not final, or the final answer.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    memory_messages = <span class="variable language_">self</span>.write_memory_to_messages()</span><br><span class="line">        </span><br><span class="line"><span class="comment"># agents.py line:758</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write_memory_to_messages</span>(<span class="params"></span></span><br><span class="line"><span class="params">        self,</span></span><br><span class="line"><span class="params">        summary_mode: <span class="built_in">bool</span> = <span class="literal">False</span>,</span></span><br><span class="line"><span class="params">    </span>) -&gt; <span class="built_in">list</span>[ChatMessage]:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    Reads past llm_outputs, actions, and observations or errors from the memory into a series of messages 	  that can be used as input to the LLM. Adds a number of keywords (such as PLAN, error, etc) to help 	 the LLM.</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    messages = <span class="variable language_">self</span>.memory.system_prompt.to_messages(summary_mode=summary_mode)</span><br><span class="line">    <span class="keyword">for</span> memory_step <span class="keyword">in</span> <span class="variable language_">self</span>.memory.steps:</span><br><span class="line">        messages.extend(memory_step.to_messages(summary_mode=summary_mode))</span><br><span class="line">    <span class="keyword">return</span> messages</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="边界处理"><a href="#边界处理" class="headerlink" title="边界处理"></a>边界处理</h4><p>当超过最大尝试次数（默认是20次）时，最后会总结19步的step，然后给出一个最终答案</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># agent.py  line:810</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">provide_final_answer</span>(<span class="params">self, task: <span class="built_in">str</span></span>) -&gt; ChatMessage:</span><br><span class="line">    </span><br><span class="line">    messages : 这里有一个专门针对这种情况的系统prompt</span><br><span class="line">    messages += <span class="variable language_">self</span>.write_memory_to_messages()[<span class="number">1</span>:]</span><br><span class="line">    messages : 需要组装的post_messages</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        chat_message: ChatMessage = <span class="variable language_">self</span>.model.generate(messages)</span><br><span class="line">        <span class="keyword">return</span> chat_message</span><br><span class="line">    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:</span><br><span class="line">        <span class="keyword">return</span> ChatMessage(</span><br><span class="line">            role=MessageRole.ASSISTANT,</span><br><span class="line">            content=[&#123;<span class="string">&quot;type&quot;</span>: <span class="string">&quot;text&quot;</span>, <span class="string">&quot;text&quot;</span>: <span class="string">f&quot;Error in generating final LLM output: <span class="subst">&#123;e&#125;</span>&quot;</span>&#125;],</span><br><span class="line">        )</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="Agent-CodeAgent"><a href="#Agent-CodeAgent" class="headerlink" title="Agent: CodeAgent"></a>Agent: CodeAgent</h4><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20250929112702011.png" alt="image-20250929112702011"></p>
+<p>项目的CodeAgent模式算是这个项目里面比较新颖的一种方式了，调用工具的API是通过执行python代码的方式来执行的，但是感觉解析python的AST那部分，就感觉好复杂-_-#，没有FunctionCall的这种方式简洁了。</p>
+<p>来源于<a href="https://link.zhihu.com/?target=https://huggingface.co/papers/2402.01030">Executable Code Actions Elicit Better LLM Agents</a>，这篇论文主要的出发动机是当前LLM Agent通常通过以预定义的格式生成 JSON 或文本来生成Action，这通常受到<strong>约束动作空间（例如，预定义工具的范围）和受限灵活性（例如，无法组合多个工具）的限制</strong>。</p>
+<blockquote>
+<p>链接：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/16341067315">https://zhuanlan.zhihu.com/p/16341067315</a></p>
+</blockquote>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent/">Agent</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">AgentScope源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目AgentScope源码学习记录</div></div></div></a><a class="pagination-related" href="/2025/11/25/hello-world/" title="Hello World"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Hello World</div></div><div class="info-2"><div class="info-item-1">开源项目AgentScope源码学习记录</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-25</div><div class="info-item-2">AgentScope源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目AgentScope源码学习记录</div></div></div></a><a class="pagination-related" href="/2025/06/24/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A5%E9%97%A8-%E7%BB%84%E5%86%85%E5%88%86%E4%BA%AB/" title="大模型入门(组内分享)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-24</div><div class="info-item-2">大模型入门(组内分享)</div></div><div class="info-2"><div class="info-item-1">背景 2025年开年以来，大家或多或少都听过下面这些词：deepseek， AI， 人工智能，Agent，具身智能；  AI到底发展到哪一步了，利用AI可以做哪些事情，或者作为技术人员，想要使用AI做一些事情，应该学习那些东西，这篇将和大家一起探讨下。 备注声明：该分享定位轻科普向，不会涉及大模型相关的底层原理，有些结论属于个人的理解和感悟，如需要深入交流，欢迎大家和我深入探讨。 大模型相关应用Prompt Engineer(提示词)Prompt 咒语 —-&gt; 激发LLM的潜能 2023年的某一天，当你开始和ChatGpt互动的那一刻开始，你就是一个Prompt Engineer了！    当你不断试探GPT，使用各种策略，反问，试探，举个例子等等(专业一点就是few shot, zero-shot, cot等等)，最终得到正确答案时，你其实已经获得了一些prompt Engineer的训练，在下一次的问答中，你就能更快更好地得到你想要的答案； 当然啦，现在大模型也挺多的，确实有一些朴素的咒语框架可以让我们快速得到更好了的回答，你如果想了解一下，可以看看下面这个课程 (超爽...</div></div></div></a><a class="pagination-related" href="/2025/11/25/mcp%E4%BB%8B%E7%BB%8D/" title="MCP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-25</div><div class="info-item-2">MCP</div></div><div class="info-2"><div class="info-item-1">MCP话不多说，直接上图即可  有MCP和没有MCP的区别，提升了效率  MCP的架构图：主要是由Host、Client和Server三部分组成  个人demo mcp demo  参考资料 MCP (Model Context Protocol)，一篇就够了。 python SDK的官方文档  测试MCP工具接入使用的地址：阿里MCP  </div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">why join the navy if you can be a pirate</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#memory-%E7%AE%A1%E7%90%86"><span class="toc-number">1.</span> <span class="toc-text">memory 管理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BE%B9%E7%95%8C%E5%A4%84%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">边界处理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Agent-CodeAgent"><span class="toc-number">3.</span> <span class="toc-text">Agent: CodeAgent</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习">AgentScope源码学习</a><time datetime="2025-11-25T11:47:53.000Z" title="发表于 2025-11-25 19:47:53">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/smolagents%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="smolagents源码学习">smolagents源码学习</a><time datetime="2025-11-25T08:43:25.000Z" title="发表于 2025-11-25 16:43:25">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/hello-world/" title="Hello World">Hello World</a><time datetime="2025-11-25T07:59:06.847Z" title="发表于 2025-11-25 15:59:06">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/mcp%E4%BB%8B%E7%BB%8D/" title="MCP">MCP</a><time datetime="2025-11-25T06:02:24.000Z" title="发表于 2025-11-25 14:02:24">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/24/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A5%E9%97%A8-%E7%BB%84%E5%86%85%E5%88%86%E4%BA%AB/" title="大模型入门(组内分享)">大模型入门(组内分享)</a><time datetime="2025-06-24T13:01:18.000Z" title="发表于 2025-06-24 21:01:18">2025-06-24</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
