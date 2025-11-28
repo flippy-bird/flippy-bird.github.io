@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>GraphRAG | 大潘子的文字角落</title><meta name="author" content="Pan"><meta name="copyright" content="Pan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1. why we need GraphRAG? https:&#x2F;&#x2F;www.microsoft.com&#x2F;en-us&#x2F;research&#x2F;blog&#x2F;graphrag-unlocking-llm-discovery-on-narrative-private-data&#x2F;   基本的RAG 难以建立信息关联。当回答某个问题需要遍历不同信息片段并通过其共享属性来提供新的综合见解时，就会出现这种情况。 基本RAG">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GraphRAG">
+<meta property="og:url" content="https://flippy-bird.github.io/2025/11/28/GraphRAG/index.html">
+<meta property="og:site_name" content="大潘子的文字角落">
+<meta property="og:description" content="1. why we need GraphRAG? https:&#x2F;&#x2F;www.microsoft.com&#x2F;en-us&#x2F;research&#x2F;blog&#x2F;graphrag-unlocking-llm-discovery-on-narrative-private-data&#x2F;   基本的RAG 难以建立信息关联。当回答某个问题需要遍历不同信息片段并通过其共享属性来提供新的综合见解时，就会出现这种情况。 基本RAG">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flippy-bird.github.io/img/avatar.png">
+<meta property="article:published_time" content="2025-11-28T02:14:50.000Z">
+<meta property="article:modified_time" content="2025-11-28T06:18:07.708Z">
+<meta property="article:author" content="Pan">
+<meta property="article:tag" content="Rag">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flippy-bird.github.io/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "GraphRAG",
+  "url": "https://flippy-bird.github.io/2025/11/28/GraphRAG/",
+  "image": "https://flippy-bird.github.io/img/avatar.png",
+  "datePublished": "2025-11-28T02:14:50.000Z",
+  "dateModified": "2025-11-28T06:18:07.708Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Pan",
+      "url": "https://flippy-bird.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favion.png"><link rel="canonical" href="https://flippy-bird.github.io/2025/11/28/GraphRAG/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'GraphRAG',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">1</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/fengmian.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">大潘子的文字角落</span></a><a class="nav-page-title" href="/"><span class="site-name">GraphRAG</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">GraphRAG</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-11-28T02:14:50.000Z" title="发表于 2025-11-28 10:14:50">2025-11-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-11-28T06:18:07.708Z" title="更新于 2025-11-28 14:18:07">2025-11-28</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">677</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h2 id="1-why-we-need-GraphRAG"><a href="#1-why-we-need-GraphRAG" class="headerlink" title="1. why we need GraphRAG?"></a>1. why we need GraphRAG?</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/">https://www.microsoft.com/en-us/research/blog/graphrag-unlocking-llm-discovery-on-narrative-private-data/</a></p>
+</blockquote>
+<ul>
+<li>基本的RAG 难以建立信息关联。当回答某个问题需要遍历不同信息片段并通过其共享属性来提供新的综合见解时，就会出现这种情况。</li>
+<li>基本RAG 在被要求整体理解大型数据集合甚至单个大型文档中的汇总语义概念时表现不佳。</li>
+</ul>
+<blockquote>
+<p>我想到的一个例子是：假设我有一个介绍 LLM的文章，然后分段式介绍了LLM的一些特点(假设每一段不显式的包含LLM信息，用它，他或者其他代词指代)，然后这些信息被分别分块，然后embedding，在query (问LLM的优点， 需要根据LLM的特点来总结)，search的时候，应该就不会查到这些信息。</p>
+</blockquote>
+<h2 id="2-GraphRAG的原理"><a href="#2-GraphRAG的原理" class="headerlink" title="2. GraphRAG的原理"></a>2. GraphRAG的原理</h2><h3 id="2-1-构建阶段"><a href="#2-1-构建阶段" class="headerlink" title="2.1 构建阶段"></a>2.1 构建阶段</h3><p>**在建立索引(index)**这一步，主要按照下面的步骤进行：</p>
+<ul>
+<li>将输入语料库分割为一系列的文本单元（TextUnits），这些单元作为处理以下步骤的可分析单元，并在我们的输出中提供细粒度的引用。</li>
+<li>使用 LLM 从文本单元中提取所有实体、关系和关键声明。并且对每个实体，关系，文本生成embedding向量</li>
+<li>使用 Leiden 技术 对知识图谱进行层次聚类。</li>
+<li>GraphRAG通过计算实体之间的关系，填充关系表，并生成关于实体的社区报告来总结不同实体之间的关系与上下文，自下而上地生成每个社区层级及其组成部分的摘要。这有助于对数据集的整体理解。</li>
+</ul>
+<img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251128104304468.png" alt="image-20251128104304468"  />
+
+<blockquote>
+<p>具体的例子可以参考这篇知乎文章的例子: <a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/13801755777">GraphRAG快速入门与原理详解</a></p>
+</blockquote>
+<h3 id="2-1-查询阶段"><a href="#2-1-查询阶段" class="headerlink" title="2.1 查询阶段"></a>2.1 查询阶段</h3><p><strong>在查询这一步</strong>，又分为两种方式：</p>
+<ul>
+<li>全局搜索，用于通过利用社区层级摘要来推理有关语料库的整体问题。</li>
+<li>局部搜索，用于通过扩展到其邻居和相关概念来推理特定实体的情况。</li>
+</ul>
+<h4 id="局部搜索"><a href="#局部搜索" class="headerlink" title="局部搜索"></a>局部搜索</h4><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251128140852857.png" alt="image-20251128140852857"></p>
+<p>有点类似BM25关键词搜索，然后找到一些相关的实体关系之后，然后再利用图谱的节点关系再在领近查找更多信息，然后再汇总</p>
+<h4 id="全局搜索"><a href="#全局搜索" class="headerlink" title="全局搜索"></a>全局搜索</h4><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251128141135147.png" alt="image-20251128141135147"></p>
+<p>根据用户的问题，全局搜索会搜索相关的社区报告 ，并且给每一个社区报告打分(<strong>使用LLM来进行</strong>)，根据打分的高低，然后将最相关的社区报告给到大模型的上下文中；</p>
+<h2 id="3-项目源码学习"><a href="#3-项目源码学习" class="headerlink" title="3. 项目源码学习"></a>3. 项目源码学习</h2><ul>
+<li><input disabled="" type="checkbox"> TODO</li>
+</ul>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Rag/">Rag</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">AgentScope源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目AgentScope源码学习记录</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">why join the navy if you can be a pirate</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-why-we-need-GraphRAG"><span class="toc-text">1. why we need GraphRAG?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-GraphRAG%E7%9A%84%E5%8E%9F%E7%90%86"><span class="toc-text">2. GraphRAG的原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9E%84%E5%BB%BA%E9%98%B6%E6%AE%B5"><span class="toc-text">2.1 构建阶段</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E6%9F%A5%E8%AF%A2%E9%98%B6%E6%AE%B5"><span class="toc-text">2.1 查询阶段</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B1%80%E9%83%A8%E6%90%9C%E7%B4%A2"><span class="toc-text">局部搜索</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%A8%E5%B1%80%E6%90%9C%E7%B4%A2"><span class="toc-text">全局搜索</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-%E9%A1%B9%E7%9B%AE%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0"><span class="toc-text">3. 项目源码学习</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/28/GraphRAG/" title="GraphRAG">GraphRAG</a><time datetime="2025-11-28T02:14:50.000Z" title="发表于 2025-11-28 10:14:50">2025-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习">AgentScope源码学习</a><time datetime="2025-11-25T11:47:53.000Z" title="发表于 2025-11-25 19:47:53">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/smolagents%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="smolagents源码学习">smolagents源码学习</a><time datetime="2025-11-25T08:43:25.000Z" title="发表于 2025-11-25 16:43:25">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/hello-world/" title="Hello World">Hello World</a><time datetime="2025-11-25T07:59:06.847Z" title="发表于 2025-11-25 15:59:06">2025-11-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/mcp%E4%BB%8B%E7%BB%8D/" title="MCP">MCP</a><time datetime="2025-11-25T06:02:24.000Z" title="发表于 2025-11-25 14:02:24">2025-11-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
