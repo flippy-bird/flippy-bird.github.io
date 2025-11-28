@@ -1,6 +1,7 @@
 ---
 title: RAG优化
 date: 2025-4-21 16:10:12
+description: 总结了一下当前RAG常见的优化方法
 tags:
     - Rag
 ---
