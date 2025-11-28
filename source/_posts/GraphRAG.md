@@ -1,8 +1,10 @@
 ---
 title: GraphRAG
-date: 2025-11-28 10:14:50
+date: 2025-3-13 10:14:50
 tags:
     - Rag
+categories:
+    - RAG框架学习
 ---
 
 
