@@ -334,9 +334,9 @@ aside:
   card_archives:
     enable: true
     # Type: monthly / yearly
-    type: monthly
+    type: yearly
     # Eg: YYYY年MM月
-    format: MMMM YYYY
+    format: YYYY
     # Sort of order. 1, asc for ascending; -1, desc for descending
     order: -1
     # If set 0 will show all
