@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>LLM的plan调研 | 大潘子的文字角落</title><meta name="author" content="Pan"><meta name="copyright" content="Pan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="对于agent的规划部分比较感兴趣，因此看了一下目前各个开源方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LLM的plan调研">
+<meta property="og:url" content="https://flippy-bird.github.io/2025/12/08/LLM%E7%9A%84plan%E8%B0%83%E7%A0%94/index.html">
+<meta property="og:site_name" content="大潘子的文字角落">
+<meta property="og:description" content="对于agent的规划部分比较感兴趣，因此看了一下目前各个开源方案">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flippy-bird.github.io/img/avatar.png">
+<meta property="article:published_time" content="2025-12-08T06:58:33.000Z">
+<meta property="article:modified_time" content="2025-12-08T12:03:07.446Z">
+<meta property="article:author" content="Pan">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="plan">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flippy-bird.github.io/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "LLM的plan调研",
+  "url": "https://flippy-bird.github.io/2025/12/08/LLM%E7%9A%84plan%E8%B0%83%E7%A0%94/",
+  "image": "https://flippy-bird.github.io/img/avatar.png",
+  "datePublished": "2025-12-08T06:58:33.000Z",
+  "dateModified": "2025-12-08T12:03:07.446Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Pan",
+      "url": "https://flippy-bird.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favion.png"><link rel="canonical" href="https://flippy-bird.github.io/2025/12/08/LLM%E7%9A%84plan%E8%B0%83%E7%A0%94/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'LLM的plan调研',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/fengmian.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">大潘子的文字角落</span></a><a class="nav-page-title" href="/"><span class="site-name">LLM的plan调研</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">LLM的plan调研</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-12-08T06:58:33.000Z" title="发表于 2025-12-08 14:58:33">2025-12-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-08T12:03:07.446Z" title="更新于 2025-12-08 20:03:07">2025-12-08</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="1-langchain-langgraph"><a href="#1-langchain-langgraph" class="headerlink" title="1. langchain&#x2F;langgraph"></a>1. langchain&#x2F;langgraph</h3><blockquote>
+<p>参考资料：</p>
+<ol>
+<li><a target="_blank" rel="noopener" href="https://docs.langchain.com/oss/python/langchain/middleware/built-in#to-do-list">https://docs.langchain.com/oss/python/langchain/middleware/built-in#to-do-list</a></li>
+</ol>
+</blockquote>
+<p>langchain的思想是通过middleware的形式来添加plan的能力，可以参考源码部分：langchain&#x2F;libs&#x2F;langchain_v1&#x2F;langchain&#x2F;agents&#x2F;middleware&#x2F;todo.py （12月8日，后续不知道会不会变化）<strong>其本质仍然是一个工具函数的调用，内部的一个工具是write_todos</strong>, 相关的middleware是 TodoListMiddleware</p>
+<p>这个工具的具体定义是：关于write_todos这个工具的描述，这个描述写的很长，具体可以去源码查看；</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@tool(<span class="params">description=WRITE_TODOS_TOOL_DESCRIPTION</span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">write_todos</span>(<span class="params">todos: <span class="built_in">list</span>[Todo], tool_call_id: Annotated[<span class="built_in">str</span>, InjectedToolCallId]</span>) -&gt; Command:</span><br><span class="line">    <span class="string">&quot;&quot;&quot;Create and manage a structured task list for your current work session.&quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> Command(</span><br><span class="line">        update=&#123;</span><br><span class="line">            <span class="string">&quot;todos&quot;</span>: todos,</span><br><span class="line">            <span class="string">&quot;messages&quot;</span>: [ToolMessage(<span class="string">f&quot;Updated todo list to <span class="subst">&#123;todos&#125;</span>&quot;</span>, tool_call_id=tool_call_id)],</span><br><span class="line">        &#125;</span><br><span class="line">    )</span><br></pre></td></tr></table></figure>
+
+<p>system prompt是：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">WRITE_TODOS_SYSTEM_PROMPT = <span class="string">&quot;&quot;&quot;## `write_todos`</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">You have access to the `write_todos` tool to help you manage and plan complex objectives.</span></span><br><span class="line"><span class="string">Use this tool for complex objectives to ensure that you are tracking each necessary step and giving the user visibility into your progress.</span></span><br><span class="line"><span class="string">This tool is very helpful for planning complex objectives, and for breaking down these larger complex objectives into smaller steps.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">It is critical that you mark todos as completed as soon as you are done with a step. Do not batch up multiple steps before marking them as completed.</span></span><br><span class="line"><span class="string">For simple objectives that only require a few steps, it is better to just complete the objective directly and NOT use this tool.</span></span><br><span class="line"><span class="string">Writing todos takes time and tokens, use it when it is helpful for managing complex many-step problems! But not for simple few-step requests.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Important To-Do List Usage Notes to Remember</span></span><br><span class="line"><span class="string">- The `write_todos` tool should never be called multiple times in parallel.</span></span><br><span class="line"><span class="string">- Don&#x27;t be afraid to revise the To-Do list as you go. New information may reveal new tasks that need to be done, or old tasks that are irrelevant.&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="2-Qwen-code"><a href="#2-Qwen-code" class="headerlink" title="2. Qwen code"></a>2. Qwen code</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/QwenLM/qwen-code">https://github.com/QwenLM/qwen-code</a></p>
+</blockquote>
+<p>采用的是内置工具的方式来实现agent的plan能力，源代码部分可参考：qwen-code&#x2F;packages&#x2F;core&#x2F;src&#x2F;tools&#x2F;todoWrite.ts</p>
+<p>具体的提供了下面的todo工具类：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">TodoWriteToolInvocation</span> <span class="keyword">extends</span> <span class="title class_ inherited__">BaseToolInvocation</span>&lt;</span><br><span class="line">  <span class="title class_">TodoWriteParams</span>,</span><br><span class="line">  <span class="title class_">ToolResult</span></span><br><span class="line">&gt; &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 暴露给外面的todo工具类</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">TodoWriteTool</span> <span class="keyword">extends</span> <span class="title class_ inherited__">BaseDeclarativeTool</span>&lt;</span><br><span class="line">  <span class="title class_">TodoWriteParams</span>,</span><br><span class="line">  <span class="title class_">ToolResult</span></span><br><span class="line">&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关于工具的描述，截取一部分prompt如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> todoWriteToolDescription = <span class="string">`</span></span><br><span class="line"><span class="string">Use this tool to create and manage a structured task list for your current coding session. This helps you track progress, organize complex tasks, and demonstrate thoroughness to the user.</span></span><br><span class="line"><span class="string">It also helps the user understand the progress of the task and overall progress of their requests.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## When to Use This Tool</span></span><br><span class="line"><span class="string">Use this tool proactively in these scenarios:</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">1. Complex multi-step tasks - When a task requires 3 or more distinct steps or actions</span></span><br><span class="line"><span class="string">2. Non-trivial and complex tasks - Tasks that require careful planning or multiple operations</span></span><br><span class="line"><span class="string">3. User explicitly requests todo list - When the user directly asks you to use the todo list</span></span><br><span class="line"><span class="string">4. User provides multiple tasks - When users provide a list of things to be done (numbered or comma-separated)</span></span><br><span class="line"><span class="string">5. After receiving new instructions - Immediately capture user requirements as todos</span></span><br><span class="line"><span class="string">6. When you start working on a task - Mark it as in_progress BEFORE beginning work. Ideally you should only have one todo as in_progress at a time</span></span><br><span class="line"><span class="string">7. After completing a task - Mark it as completed and add any new follow-up tasks discovered during implementation</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## When NOT to Use This Tool</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Skip using this tool when:</span></span><br><span class="line"><span class="string">1. There is only a single, straightforward task</span></span><br><span class="line"><span class="string">2. The task is trivial and tracking it provides no organizational benefit</span></span><br><span class="line"><span class="string">3. The task can be completed in less than 3 trivial steps</span></span><br><span class="line"><span class="string">4. The task is purely conversational or informational</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">NOTE that you should not use this tool if there is only one trivial task to do. In this case you are better off just doing the task directly.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Examples of When to Use the Todo List </span></span><br><span class="line"><span class="string">   ...</span></span><br><span class="line"><span class="string">`</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="3-gemini-cli"><a href="#3-gemini-cli" class="headerlink" title="3. gemini cli"></a>3. gemini cli</h3><p>和qwen code 类似，源码部分在：gemini-cli&#x2F;packages&#x2F;core&#x2F;src&#x2F;tools&#x2F;write-todos.ts</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">WriteTodosTool</span> <span class="keyword">extends</span> <span class="title class_ inherited__">BaseDeclarativeTool</span>&lt;</span><br><span class="line">  <span class="title class_">WriteTodosToolParams</span>,</span><br><span class="line">  <span class="title class_">ToolResult</span></span><br><span class="line">&gt; &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<p>工具说明的prompt截取如下：</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="variable constant_">WRITE_TODOS_DESCRIPTION</span> = <span class="string">`This tool can help you list out the current subtasks that are required to be completed for a given user request. The list of subtasks helps you keep track of the current task, organize complex queries and help ensure that you don&#x27;t miss any steps. With this list, the user can also see the current progress you are making in executing a given task.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Depending on the task complexity, you should first divide a given task into subtasks and then use this tool to list out the subtasks that are required to be completed for a given user request.</span></span><br><span class="line"><span class="string">Each of the subtasks should be clear and distinct. </span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Use this tool for complex queries that require multiple steps. If you find that the request is actually complex after you have started executing the user task, create a todo list and use it. If execution of the user task requires multiple steps, planning and generally is higher complexity than a simple Q&amp;A, use this tool.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">DO NOT use this tool for simple tasks that can be completed in less than 2 steps. If the user query is simple and straightforward, do not use the tool. If you can respond with an answer in a single turn then this tool is not required.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Task state definitions</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">- pending: Work has not begun on a given subtask.</span></span><br><span class="line"><span class="string">- in_progress: Marked just prior to beginning work on a given subtask. You should only have one subtask as in_progress at a time.</span></span><br><span class="line"><span class="string">- completed: Subtask was successfully completed with no errors or issues. If the subtask required more steps to complete, update the todo list with the subtasks. All steps should be identified as completed only when they are completed.</span></span><br><span class="line"><span class="string">- cancelled: As you update the todo list, some tasks are not required anymore due to the dynamic nature of the task. In this case, mark the subtasks as cancelled.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Methodology for using this tool</span></span><br><span class="line"><span class="string">1. Use this todo list as soon as you receive a user request based on the complexity of the task.</span></span><br><span class="line"><span class="string">2. Keep track of every subtask that you update the list with.</span></span><br><span class="line"><span class="string">3. Mark a subtask as in_progress before you begin working on it. You should only have one subtask as in_progress at a time.</span></span><br><span class="line"><span class="string">4. Update the subtask list as you proceed in executing the task. The subtask list is not static and should reflect your progress and current plans, which may evolve as you acquire new information.</span></span><br><span class="line"><span class="string">5. Mark a subtask as completed when you have completed it.</span></span><br><span class="line"><span class="string">6. Mark a subtask as cancelled if the subtask is no longer needed.</span></span><br><span class="line"><span class="string">7. You must update the todo list as soon as you start, stop or cancel a subtask. Don&#x27;t batch or wait to update the todo list.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## Examples of When to Use the Todo List</span></span><br><span class="line"><span class="string"> ...</span></span><br><span class="line"><span class="string">`</span>;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="4-AgentScope"><a href="#4-AgentScope" class="headerlink" title="4. AgentScope"></a>4. AgentScope</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/agentscope-ai/agentscope">https://github.com/agentscope-ai/agentscope</a></p>
+</blockquote>
+<p>也是通过工具调用的方式来实现的，可以参考我之前的文档 <a href="https://flippy-bird.github.io/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/">AgentScope源码学习</a></p>
+<h3 id="5-cline"><a href="#5-cline" class="headerlink" title="5.cline"></a>5.cline</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://github.com/cline/cline">https://github.com/cline/cline</a></p>
+</blockquote>
+<p>应该也是通过调用的工具的方式让Agent具备了plan的能力，相关的提示词源码是：<a target="_blank" rel="noopener" href="https://github.com/cline/cline/blob/main/src/core/prompts/system-prompt/components/task_progress.ts">cline&#x2F;src&#x2F;core&#x2F;prompts&#x2F;system-prompt&#x2F;components&#x2F;task_progress.ts</a></p>
+<p>对应的prompt如下：可以看到，</p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="variable constant_">UPDATING_TASK_PROGRESS</span> = <span class="string">`UPDATING TASK PROGRESS</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">You can track and communicate your progress on the overall task using the task_progress parameter supported by every tool call. Using task_progress ensures you remain on task, and stay focused on completing the user&#x27;s objective. This parameter can be used in any mode, and with any tool call.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">- When switching from PLAN MODE to ACT MODE, you must create a comprehensive todo list for the task using the task_progress parameter</span></span><br><span class="line"><span class="string">- Todo list updates should be done silently using the task_progress parameter - do not announce these updates to the user</span></span><br><span class="line"><span class="string">- Use standard Markdown checklist format: &quot;- [ ]&quot; for incomplete items and &quot;- [x]&quot; for completed items</span></span><br><span class="line"><span class="string">- Keep items focused on meaningful progress milestones rather than minor technical details. The checklist should not be so granular that minor implementation details clutter the progress tracking.</span></span><br><span class="line"><span class="string">- For simple tasks, short checklists with even a single item are acceptable. For complex tasks, avoid making the checklist too long or verbose.</span></span><br><span class="line"><span class="string">- If you are creating this checklist for the first time, and the tool use completes the first step in the checklist, make sure to mark it as completed in your task_progress parameter.</span></span><br><span class="line"><span class="string">- Provide the whole checklist of steps you intend to complete in the task, and keep the checkboxes updated as you make progress. It&#x27;s okay to rewrite this checklist as needed if it becomes invalid due to scope changes or new information.</span></span><br><span class="line"><span class="string">- If a checklist is being used, be sure to update it any time a step has been completed.</span></span><br><span class="line"><span class="string">- The system will automatically include todo list context in your prompts when appropriate - these reminders are important.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Example:</span></span><br><span class="line"><span class="string">&lt;execute_command&gt;</span></span><br><span class="line"><span class="string">&lt;command&gt;npm install react&lt;/command&gt;</span></span><br><span class="line"><span class="string">&lt;requires_approval&gt;false&lt;/requires_approval&gt;</span></span><br><span class="line"><span class="string">&lt;task_progress&gt;</span></span><br><span class="line"><span class="string">- [x] Set up project structure</span></span><br><span class="line"><span class="string">- [x] Install dependencies</span></span><br><span class="line"><span class="string">- [ ] Create components</span></span><br><span class="line"><span class="string">- [ ] Test application</span></span><br><span class="line"><span class="string">&lt;/task_progress&gt;</span></span><br><span class="line"><span class="string">&lt;/execute_command&gt;`</span></span><br></pre></td></tr></table></figure>
+
+<p>对于Vscode中ide部分，貌似是通过一个focus chain模块来实现的，具体部分可参考源代码文件：</p>
+<ul>
+<li>cline&#x2F;src&#x2F;core&#x2F;task&#x2F;focus-chain&#x2F;</li>
+<li></li>
+</ul>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Agent/">Agent</a><a class="post-meta__tags" href="/tags/plan/">plan</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2025/12/01/Mem0%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="Mem0源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Mem0源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目Mem0源码学习记录</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-25</div><div class="info-item-2">AgentScope源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目AgentScope源码学习记录</div></div></div></a><a class="pagination-related" href="/2025/12/01/LLM-memory/" title="LLM memory"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-12-01</div><div class="info-item-2">LLM memory</div></div><div class="info-2"><div class="info-item-1">LLM memory 综合文档记录</div></div></div></a><a class="pagination-related" href="/2025/12/01/Mem0%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="Mem0源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-12-01</div><div class="info-item-2">Mem0源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目Mem0源码学习记录</div></div></div></a><a class="pagination-related" href="/2025/11/25/mcp%E4%BB%8B%E7%BB%8D/" title="MCP"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-25</div><div class="info-item-2">MCP</div></div><div class="info-2"><div class="info-item-1">MCP协议的介绍以及实践</div></div></div></a><a class="pagination-related" href="/2025/11/25/smolagents%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="smolagents源码学习"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-11-25</div><div class="info-item-2">smolagents源码学习</div></div><div class="info-2"><div class="info-item-1">开源项目smolagents源码学习记录</div></div></div></a><a class="pagination-related" href="/2025/06/24/%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%85%A5%E9%97%A8-%E7%BB%84%E5%86%85%E5%88%86%E4%BA%AB/" title="大模型入门(组内分享)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2025-06-24</div><div class="info-item-2">大模型入门(组内分享)</div></div><div class="info-2"><div class="info-item-1">组内LLM分享，从基础到入门</div></div></div></a></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">why join the navy if you can be a pirate</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-langchain-langgraph"><span class="toc-text">1. langchain&#x2F;langgraph</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-Qwen-code"><span class="toc-text">2. Qwen code</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-gemini-cli"><span class="toc-text">3. gemini cli</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-AgentScope"><span class="toc-text">4. AgentScope</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-cline"><span class="toc-text">5.cline</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/08/LLM%E7%9A%84plan%E8%B0%83%E7%A0%94/" title="LLM的plan调研">LLM的plan调研</a><time datetime="2025-12-08T06:58:33.000Z" title="发表于 2025-12-08 14:58:33">2025-12-08</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/01/Mem0%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="Mem0源码学习">Mem0源码学习</a><time datetime="2025-12-01T05:54:24.000Z" title="发表于 2025-12-01 13:54:24">2025-12-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/12/01/LLM-memory/" title="LLM memory">LLM memory</a><time datetime="2025-12-01T05:47:10.000Z" title="发表于 2025-12-01 13:47:10">2025-12-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/28/LightRAG/" title="LightRAG">LightRAG</a><time datetime="2025-11-28T07:06:12.000Z" title="发表于 2025-11-28 15:06:12">2025-11-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/11/25/AgentScope%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="AgentScope源码学习">AgentScope源码学习</a><time datetime="2025-11-25T11:47:53.000Z" title="发表于 2025-11-25 19:47:53">2025-11-25</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
