@@ -203,4 +203,110 @@ Example:
 对于Vscode中ide部分，貌似是通过一个focus chain模块来实现的，具体部分可参考源代码文件：
 
 - cline/src/core/task/focus-chain/
-- 
+- cline/src/shared/tools.ts
+
+cline/src/shared/tools.ts里面是cline的默认工具，其中 TODO指向的是focus_chain 这个工具
+
+```typescript
+export enum ClineDefaultTool {
+	ASK = "ask_followup_question",
+	ATTEMPT = "attempt_completion",
+	BASH = "execute_command",
+	FILE_EDIT = "replace_in_file",
+	FILE_READ = "read_file",
+	FILE_NEW = "write_to_file",
+	SEARCH = "search_files",
+	LIST_FILES = "list_files",
+	LIST_CODE_DEF = "list_code_definition_names",
+	BROWSER = "browser_action",
+	MCP_USE = "use_mcp_tool",
+	MCP_ACCESS = "access_mcp_resource",
+	MCP_DOCS = "load_mcp_documentation",
+	NEW_TASK = "new_task",
+	PLAN_MODE = "plan_mode_respond",
+	ACT_MODE = "act_mode_respond",
+	TODO = "focus_chain",      // 这个地方，应该就是cline里面用来规划的工具了
+	WEB_FETCH = "web_fetch",
+	WEB_SEARCH = "web_search",
+	CONDENSE = "condense",
+	SUMMARIZE_TASK = "summarize_task",
+	REPORT_BUG = "report_bug",
+	NEW_RULE = "new_rule",
+	APPLY_PATCH = "apply_patch",
+	GENERATE_EXPLANATION = "generate_explanation",
+}
+```
+
+再按照cline/src/core 里面的README的结构说明
+
+![image-20251209105250448](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251209105250448.png)
+
+工具类相关的实现应该是在task文件目录下，因此在task目录，可以找到focus-chain这个文件夹
+
+在index.ts 文件里面可以看到，是通过FocusChainManager 这个类来实现todo list的检查和更新的；在prompts.ts这个文件夹里面可以看到涉及到todo list操作相关的prompt，下面展示一个初始化任务时的提示词
+
+```typescript
+// Prompt for initial list creation
+const initial = `
+# task_progress CREATION REQUIRED - ACT MODE ACTIVATED
+
+**You've just switched from PLAN MODE to ACT MODE!**
+
+** IMMEDIATE ACTION REQUIRED:**
+1. Create a comprehensive todo list in your NEXT tool call
+2. Use the task_progress parameter to provide the list
+3. Format each item using markdown checklist syntax:
+	- [ ] For tasks to be done
+	- [x] For any tasks already completed
+
+**Your todo/task_progress list should include:**
+   - All major implementation steps
+   - Testing and validation tasks
+   - Documentation updates if needed
+   - Final verification steps
+
+**Example format:**\
+   - [ ] Set up project structure
+   - [ ] Implement core functionality
+   - [ ] Add error handling
+   - [ ] Write tests
+   - [ ] Test implementation
+   - [ ] Document changes
+
+**Remember:** Keeping the task_progress list updated helps track progress and ensures nothing is missed.`
+```
+
+从使用上来看，cline似乎也是使用的ReAct模式，当然，可能会有一些变化，核心逻辑是在 cline/src/core/task/index.ts这个文件里面，这个文件里面有一些循环,如下面的initiateTaskLoop函数，大概可以判断应该是存在ReAct模式的(从下面这个函数的注释也可以看出来)，逻辑太长，后面有时间可以仔细研究一下，主要看recursivelyMakeClineRequests的逻辑；
+
+```typescript
+private async initiateTaskLoop(userContent: ClineContent[]): Promise<void> {
+    let nextUserContent = userContent
+    let includeFileDetails = true
+    while (!this.taskState.abort) {
+        const didEndLoop = await this.recursivelyMakeClineRequests(nextUserContent, includeFileDetails)
+        includeFileDetails = false // we only need file details the first time
+
+        //  The way this agentic loop works is that cline will be given a task that he then calls tools to complete. unless there's an attempt_completion call, we keep responding back to him with his tool's responses until he either attempt_completion or does not use anymore tools. If he does not use anymore tools, we ask him to consider if he's completed the task and then call attempt_completion, otherwise proceed with completing the task.
+
+        //const totalCost = this.calculateApiCost(totalInputTokens, totalOutputTokens)
+        if (didEndLoop) {
+            // For now a task never 'completes'. This will only happen if the user hits max requests and denies resetting the count.
+            //this.say("task_completed", `Task completed. Total API usage cost: ${totalCost}`)
+            break
+        } else {
+            // this.say(
+            // 	"tool",
+            // 	"Cline responded with only text blocks but has not called attempt_completion yet. Forcing him to continue with task..."
+            // )
+            nextUserContent = [
+                {
+                    type: "text",
+                    text: formatResponse.noToolsUsed(this.useNativeToolCalls),
+                },
+            ]
+            this.taskState.consecutiveMistakeCount++
+        }
+    }
+}
+```
+
