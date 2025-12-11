@@ -4,19 +4,6 @@
   
     
     <entry>
-      <title>来自hexo博客的hello world</title>
-      <link href="/2025/12/11/hello-world/"/>
-      <url>/2025/12/11/hello-world/</url>
-      
-        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
-      
-      
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>mobile-agent</title>
       <link href="/2025/12/09/mobile-agent/"/>
       <url>/2025/12/09/mobile-agent/</url>
@@ -360,11 +347,11 @@
     
     
     <entry>
-      <title>花屏问题(精度不够导致)</title>
-      <link href="/2021/11/17/%E8%8A%B1%E5%B1%8F%E9%97%AE%E9%A2%98(%E7%B2%BE%E5%BA%A6%E4%B8%8D%E5%A4%9F%E5%AF%BC%E8%87%B4)/"/>
-      <url>/2021/11/17/%E8%8A%B1%E5%B1%8F%E9%97%AE%E9%A2%98(%E7%B2%BE%E5%BA%A6%E4%B8%8D%E5%A4%9F%E5%AF%BC%E8%87%B4)/</url>
+      <title>纹理贴图预乘问题</title>
+      <link href="/2021/11/17/%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE%E7%9A%84%E9%A2%84%E4%B9%98%E9%97%AE%E9%A2%98/"/>
+      <url>/2021/11/17/%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE%E7%9A%84%E9%A2%84%E4%B9%98%E9%97%AE%E9%A2%98/</url>
       
-        <content type="html"><![CDATA[<h2 id="花屏问题"><a href="#花屏问题" class="headerlink" title="花屏问题"></a>花屏问题</h2><span id="more"></span><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/video.4jgiqew57kw0.gif" alt="video" style="zoom: 50%;" />  <p>我在使用stbi_image去将一个图片数据转化为纹理图片，我的代码如下：</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/stb_image.png" alt="stb_image"></p><p>这里我一开始写的是char,结果输出图片的数据全是0，因为使用char,发生了数据的上溢，变成了0；</p><p>至于上面的那个花屏现象，是由于精度不够导致的。</p><h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>刚开始时，我写的是255(下图标记处），结果就出现了花屏的现象</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/image.2zp4ulu4fmq0.png" alt="image"></p><p>改成255.0之后显示就正常了</p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/1.72v379gjerg0.gif" alt="1" style="zoom:50%;" /> ]]></content>
+        <content type="html"><![CDATA[<h2 id="纹理贴图预乘问题"><a href="#纹理贴图预乘问题" class="headerlink" title="纹理贴图预乘问题"></a>纹理贴图预乘问题</h2><span id="more"></span><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>在一次opengl<strong>纹理贴图贴PNG图片</strong>的过程中，我遇到了下面的问题，结果如下图：</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/image.1g4g07fkd2rk.png" alt="image"> </p><p>​可以发现，贴图的边界存在一些白色的点，非常影响最后的效果。一开始，我以为是没有开mimmap的原因，因为我发现我使用的贴图的精度很高(2560 * 2560),但是并不是，我已经开启mimmap，仍然有白点的存在。我想了很久，一直以为是锯齿或者其它原因，各种RenderDoc，matlab实验，仍没有解决问题，后面在矿哥的帮助下，一秒解决了问题，真大神呀。</p><h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a><strong>Solution</strong></h3><p>出现上面的问题不是锯齿的问题，而是alpha blend的问题，上面那张wolf图像的精度是2560 * 2560，进行贴图时会进行缩放，这时会产生一些问题，具体的文章解释见下面的文章解释</p><blockquote><p><a href="https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre">Alpha Blending: To Pre or Not To Pre</a></p><p>[<a href="https://www.cnblogs.com/xiaonanxia/p/9448444.html">图片Alpha预乘的作用</a>]</p></blockquote><p>具体的处理代码</p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/alpha_premultiple.png" alt="alpha_premultiple" style="zoom: 80%;" /> <p>预乘之后问题就解决了，结果如下：</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/image.sfg8evv0xvk.png" alt="image"> </p>]]></content>
       
       
       <categories>
@@ -385,11 +372,11 @@
     
     
     <entry>
-      <title>纹理贴图预乘问题</title>
-      <link href="/2021/11/17/%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE%E7%9A%84%E9%A2%84%E4%B9%98%E9%97%AE%E9%A2%98/"/>
-      <url>/2021/11/17/%E7%BA%B9%E7%90%86%E8%B4%B4%E5%9B%BE%E7%9A%84%E9%A2%84%E4%B9%98%E9%97%AE%E9%A2%98/</url>
+      <title>花屏问题(精度不够导致)</title>
+      <link href="/2021/11/17/%E8%8A%B1%E5%B1%8F%E9%97%AE%E9%A2%98(%E7%B2%BE%E5%BA%A6%E4%B8%8D%E5%A4%9F%E5%AF%BC%E8%87%B4)/"/>
+      <url>/2021/11/17/%E8%8A%B1%E5%B1%8F%E9%97%AE%E9%A2%98(%E7%B2%BE%E5%BA%A6%E4%B8%8D%E5%A4%9F%E5%AF%BC%E8%87%B4)/</url>
       
-        <content type="html"><![CDATA[<h2 id="纹理贴图预乘问题"><a href="#纹理贴图预乘问题" class="headerlink" title="纹理贴图预乘问题"></a>纹理贴图预乘问题</h2><span id="more"></span><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><p>在一次opengl<strong>纹理贴图贴PNG图片</strong>的过程中，我遇到了下面的问题，结果如下图：</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/image.1g4g07fkd2rk.png" alt="image"> </p><p>​可以发现，贴图的边界存在一些白色的点，非常影响最后的效果。一开始，我以为是没有开mimmap的原因，因为我发现我使用的贴图的精度很高(2560 * 2560),但是并不是，我已经开启mimmap，仍然有白点的存在。我想了很久，一直以为是锯齿或者其它原因，各种RenderDoc，matlab实验，仍没有解决问题，后面在矿哥的帮助下，一秒解决了问题，真大神呀。</p><h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a><strong>Solution</strong></h3><p>出现上面的问题不是锯齿的问题，而是alpha blend的问题，上面那张wolf图像的精度是2560 * 2560，进行贴图时会进行缩放，这时会产生一些问题，具体的文章解释见下面的文章解释</p><blockquote><p><a href="https://developer.nvidia.com/content/alpha-blending-pre-or-not-pre">Alpha Blending: To Pre or Not To Pre</a></p><p>[<a href="https://www.cnblogs.com/xiaonanxia/p/9448444.html">图片Alpha预乘的作用</a>]</p></blockquote><p>具体的处理代码</p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/alpha_premultiple.png" alt="alpha_premultiple" style="zoom: 80%;" /> <p>预乘之后问题就解决了，结果如下：</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/image.sfg8evv0xvk.png" alt="image"> </p>]]></content>
+        <content type="html"><![CDATA[<h2 id="花屏问题"><a href="#花屏问题" class="headerlink" title="花屏问题"></a>花屏问题</h2><span id="more"></span><h3 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h3><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/video.4jgiqew57kw0.gif" alt="video" style="zoom: 50%;" />  <p>我在使用stbi_image去将一个图片数据转化为纹理图片，我的代码如下：</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/stb_image.png" alt="stb_image"></p><p>这里我一开始写的是char,结果输出图片的数据全是0，因为使用char,发生了数据的上溢，变成了0；</p><p>至于上面的那个花屏现象，是由于精度不够导致的。</p><h3 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h3><p>刚开始时，我写的是255(下图标记处），结果就出现了花屏的现象</p><p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/image.2zp4ulu4fmq0.png" alt="image"></p><p>改成255.0之后显示就正常了</p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/markdown_image/1.72v379gjerg0.gif" alt="1" style="zoom:50%;" /> ]]></content>
       
       
       <categories>
@@ -604,6 +591,19 @@
             <tag> C++ </tag>
             
         </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>来自hexo博客的hello world</title>
+      <link href="/2021/01/13/hello-world/"/>
+      <url>/2021/01/13/hello-world/</url>
+      
+        <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+      
+      
       
     </entry>
     
