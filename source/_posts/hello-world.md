@@ -1,6 +1,6 @@
 ---
-title: Hello World
-description: 开源项目AgentScope源码学习记录
+title: 来自hexo博客的hello world
+description: hexo博客的基本操作
 # cover: /pan_img/AS_cover.png
 ---
 Welcome to [Hexo](https://hexo.io/)! This is your very first post.
