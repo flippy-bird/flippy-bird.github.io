@@ -4,6 +4,7 @@ date: 2021-11-17 22:46:59
 tags: 
     - bug
 description: C++ 导入dll动态库时的顺序问题
+cover: /covers/1.png
 categories: 
     - "C++"
 ---

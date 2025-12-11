@@ -6,6 +6,7 @@ tags:
 categories: 
     - OpenGL
 description: 记录一个使用OpenGL ES在ios上渲染不正确的问题
+cover: /covers/3.png
 ---
 
 ## 输出纹理为YUV 和RGB

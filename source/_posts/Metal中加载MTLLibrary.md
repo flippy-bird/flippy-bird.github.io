@@ -4,6 +4,7 @@ date: 2021-09-04 13:54:16
 tags: "Metal"
 categories: "iOS新手村"
 description: 使用Metal加载指定shader文件
+cover: /covers/20.png
 ---
 
 ## Metal 中加载MTLLibrary

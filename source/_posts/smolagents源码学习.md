@@ -2,6 +2,7 @@
 title: smolagents源码学习
 date: 2025-11-25 16:43:25
 description: 开源项目smolagents源码学习记录
+cover: /covers/26.png
 # cover: /pan_img/llm_cover.png
 tags:
     - Agent

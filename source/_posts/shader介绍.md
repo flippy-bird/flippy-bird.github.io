@@ -3,6 +3,7 @@ title: shader介绍
 date: 2023-05-14 17:48:35
 tags: "shader"
 categories: "shader"
+cover: /covers/25.png
 ---
 
 ## shader基本用法总结
@@ -360,7 +361,7 @@ void main()
 }
 ```
 
-![image](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-hosing/image.31u4tqtqfya0.webp)    ![image-20230514185339709](C:/Users/panren/AppData/Roaming/Typora/typora-user-images/image-20230514185339709.png)
+![image](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-hosing/image.31u4tqtqfya0.webp)   <img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/2e339c48-1d52-4342-a954-8a983f4ac731.png" alt="1" style="zoom:37%;" />
 
 ​                     原图                                                             运行代码图
 

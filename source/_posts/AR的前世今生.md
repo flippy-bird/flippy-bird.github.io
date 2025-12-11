@@ -2,6 +2,7 @@
 title: AR的前世今生
 date: 2022-9-27 15:58:23
 description: 2022年的时候，元宇宙很火，让我们简单聊一聊元宇宙的发展吧
+cover: /covers/9.png
 tags:
     - 元宇宙
     - AR

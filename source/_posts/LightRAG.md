@@ -2,6 +2,7 @@
 title: LightRAG
 date: 2025-11-28 15:06:12
 description: 学习了解LightRAG
+cover: /covers/14.png
 tags:
     - Rag
 categories:
