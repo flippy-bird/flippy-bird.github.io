@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>Agent</title>
+      <link href="/2025/12/11/27.Agent/"/>
+      <url>/2025/12/11/27.Agent/</url>
+      
+        <content type="html"><![CDATA[<h3 id="学习资料"><a href="#学习资料" class="headerlink" title="学习资料"></a>学习资料</h3><ol><li><a href="https://github.com/datawhalechina/hello-agents">https://github.com/datawhalechina/hello-agents</a></li><li><a href="https://github.com/NirDiamant/GenAI_Agents">https://github.com/NirDiamant/GenAI_Agents</a></li><li><a href="https://github.com/huggingface/agents-course">https://github.com/huggingface/agents-course</a></li></ol>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> LLM </tag>
+            
+            <tag> Agent </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>mobile-agent</title>
       <link href="/2025/12/09/mobile-agent/"/>
       <url>/2025/12/09/mobile-agent/</url>
@@ -200,9 +221,9 @@
       
         <tags>
             
-            <tag> Agent </tag>
-            
             <tag> LLM </tag>
+            
+            <tag> Agent </tag>
             
         </tags>
       
@@ -234,7 +255,7 @@
       <link href="/2025/04/08/langgraph%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0/"/>
       <url>/2025/04/08/langgraph%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3%E5%AD%A6%E4%B9%A0/</url>
       
-        <content type="html"><![CDATA[]]></content>
+        <content type="html"><![CDATA[<p>顺序可能不按照官方文档的顺序，按照自己感兴趣的模块，然后通过demo 代码的方式来理解这个模块的用法</p><h3 id="subgraph"><a href="#subgraph" class="headerlink" title="subgraph"></a>subgraph</h3><p>在langgraph里面，可以通过两种方式将subgraph添加到 流程中</p><ul><li>通过工具调用的方式引入 (invoke a graph from a node)</li></ul><p>例如下面的官方例子中，subgraph通过主流程中call_subgraph这个tools函数来触发subgraph的调用</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing_extensions <span class="keyword">import</span> TypedDict</span><br><span class="line"><span class="keyword">from</span> langgraph.graph.state <span class="keyword">import</span> StateGraph, START</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">SubgraphState</span>(<span class="title class_ inherited__">TypedDict</span>):</span><br><span class="line">    bar: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Subgraph</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">subgraph_node_1</span>(<span class="params">state: SubgraphState</span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;bar&quot;</span>: <span class="string">&quot;hi! &quot;</span> + state[<span class="string">&quot;bar&quot;</span>]&#125;</span><br><span class="line"></span><br><span class="line">subgraph_builder = StateGraph(SubgraphState)</span><br><span class="line">subgraph_builder.add_node(subgraph_node_1)</span><br><span class="line">subgraph_builder.add_edge(START, <span class="string">&quot;subgraph_node_1&quot;</span>)</span><br><span class="line">subgraph = subgraph_builder.<span class="built_in">compile</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Parent graph</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">State</span>(<span class="title class_ inherited__">TypedDict</span>):</span><br><span class="line">    foo: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">call_subgraph</span>(<span class="params">state: State</span>):   </span><br><span class="line">    <span class="comment"># Transform the state to the subgraph state</span></span><br><span class="line">    subgraph_output = subgraph.invoke(&#123;<span class="string">&quot;bar&quot;</span>: state[<span class="string">&quot;foo&quot;</span>]&#125;)  </span><br><span class="line">    <span class="comment"># Transform response back to the parent state</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;foo&quot;</span>: subgraph_output[<span class="string">&quot;bar&quot;</span>]&#125;</span><br><span class="line"></span><br><span class="line">builder = StateGraph(State)</span><br><span class="line">builder.add_node(<span class="string">&quot;node_1&quot;</span>, call_subgraph)</span><br><span class="line">builder.add_edge(START, <span class="string">&quot;node_1&quot;</span>)</span><br><span class="line">graph = builder.<span class="built_in">compile</span>()</span><br></pre></td></tr></table></figure><ul><li>直接以子节点的方式添加到流程中</li></ul><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> typing_extensions <span class="keyword">import</span> TypedDict</span><br><span class="line"><span class="keyword">from</span> langgraph.graph.state <span class="keyword">import</span> StateGraph, START</span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">State</span>(<span class="title class_ inherited__">TypedDict</span>):</span><br><span class="line">    foo: <span class="built_in">str</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Subgraph</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">subgraph_node_1</span>(<span class="params">state: State</span>):</span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">&quot;foo&quot;</span>: <span class="string">&quot;hi! &quot;</span> + state[<span class="string">&quot;foo&quot;</span>]&#125;</span><br><span class="line"></span><br><span class="line">subgraph_builder = StateGraph(State)</span><br><span class="line">subgraph_builder.add_node(subgraph_node_1)</span><br><span class="line">subgraph_builder.add_edge(START, <span class="string">&quot;subgraph_node_1&quot;</span>)</span><br><span class="line">subgraph = subgraph_builder.<span class="built_in">compile</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Parent graph</span></span><br><span class="line"></span><br><span class="line">builder = StateGraph(State)</span><br><span class="line">builder.add_node(<span class="string">&quot;node_1&quot;</span>, subgraph)  </span><br><span class="line">builder.add_edge(START, <span class="string">&quot;node_1&quot;</span>)</span><br><span class="line">graph = builder.<span class="built_in">compile</span>()</span><br></pre></td></tr></table></figure><p><strong>通过传参也可以看到，子节点的方式，subgraph共享主graph的State</strong></p><h3 id="human-in-loop"><a href="#human-in-loop" class="headerlink" title="human in loop"></a>human in loop</h3><h3 id="可学习资料"><a href="#可学习资料" class="headerlink" title="可学习资料"></a>可学习资料</h3><p>1.<a href="https://mp.weixin.qq.com/s/XhFbLTLcSjDj0r3KGT9EOg">Multi-Agent全面爆发！一文详解多智能体核心架构及LangGraph框架</a><br>2.<a href="https://mp.weixin.qq.com/s/m37YhDsKsQn2HWuV7LKwgg">破除AI Agent自主操控风险：万字解读LangGraph“人工干预”机制 ，附零基础实战</a></p>]]></content>
       
       
       
