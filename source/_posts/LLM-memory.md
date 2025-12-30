@@ -16,3 +16,4 @@ tags:
 3. [MemOS](https://github.com/MemTensor/MemOS)
 4. [zep](https://github.com/getzep/zep)
 5. [memu](https://github.com/NevaMind-AI/memU)
+6. [letta](https://github.com/letta-ai/letta)
