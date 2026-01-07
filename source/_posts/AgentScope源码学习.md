@@ -75,7 +75,7 @@ async def broadcast(self, msg: list[Msg] | Msg) -> None:
 
 #### Interrupt(中断介入)
 
-这个好像还不错，可以看一下
+这个好像还不错，可以看一下，文档在https://doc.agentscope.io/tutorial/task_tool.html#interrupting-tool-execution， 对于工具执行的取消，是利用了asyncio的取消机制来实现的
 
 #### Plan的实现
 
@@ -83,4 +83,7 @@ async def broadcast(self, msg: list[Msg] | Msg) -> None:
 
 ![image-20251119115208155](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20251119115208155.png)
 
+### 其它
+
+字节也出了一个类似框架：[veadk-python](https://github.com/volcengine/veadk-python)
 
