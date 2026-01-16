@@ -2,7 +2,7 @@
 title: mobile-agent
 date: 2025-12-09 10:10:52
 description: 持续跟踪端侧agent相关的项目
-cover: /covers/21.png
+cover: /covers/21.webp
 tags:
     - Agent
     - 端侧

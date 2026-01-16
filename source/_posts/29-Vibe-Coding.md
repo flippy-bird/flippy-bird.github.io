@@ -1,7 +1,11 @@
 ---
 title: Vibe Coding 相关
 date: 2026-01-14 16:10:43
+description: 总结一些Vibe Coding的一些使用经验
 tags:
+    - vibe coding
+categories:
+    - 工具使用
 ---
 
 ### Cursor使用

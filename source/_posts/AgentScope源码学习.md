@@ -2,8 +2,8 @@
 title: AgentScope源码学习
 date: 2025-11-25 19:47:53
 description: 开源项目AgentScope源码学习记录
-cover: /covers/8.png
-# cover: /pan_img/AS_cover.png
+cover: /covers/8.webp
+# cover: /pan_img/AS_cover.webp
 tags:
     - Agent
 categories:

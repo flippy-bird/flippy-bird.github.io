@@ -4,7 +4,7 @@ date: 2021-09-04 13:54:42
 tags: "Metal"
 categories: "iOS新手村"
 description: 使用Metal渲染到纹理
-cover: /covers/19.png
+cover: /covers/19.webp
 ---
 
 ## 渲染到纹理

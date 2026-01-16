@@ -3,7 +3,7 @@ title: shader介绍
 date: 2023-05-14 17:48:35
 tags: "shader"
 categories: "shader"
-cover: /covers/25.png
+cover: /covers/25.webp
 ---
 
 ## shader基本用法总结

@@ -2,7 +2,7 @@
 title: GraphRAG
 date: 2025-3-13 10:14:50
 description: 学习了解GraphRAG
-cover: /covers/11.png
+cover: /covers/11.webp
 tags:
     - Rag
 categories:

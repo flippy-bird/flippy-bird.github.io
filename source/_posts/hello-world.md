@@ -2,8 +2,8 @@
 title: 来自hexo博客的hello world
 description: hexo博客的基本操作
 date: 2021-1-13 10:14:50
-cover: /covers/12.png
-# cover: /pan_img/AS_cover.png
+cover: /covers/12.webp
+# cover: /pan_img/AS_cover.webp
 ---
 Welcome to [Hexo](https://hexo.io/)! This is your very first post.
 ## Quick Start

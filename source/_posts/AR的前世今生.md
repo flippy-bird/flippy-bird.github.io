@@ -2,7 +2,7 @@
 title: AR的前世今生
 date: 2022-9-27 15:58:23
 description: 2022年的时候，元宇宙很火，让我们简单聊一聊元宇宙的发展吧
-cover: /covers/9.png
+cover: /covers/9.webp
 tags:
     - 元宇宙
     - AR
@@ -48,17 +48,17 @@ tags:
 
 2019年，微软发布了HoloLens2，解决了视野狭小的问题，并且大幅度提升了手势追踪的准确性。虽然HoloLens2 虽然相对成熟，但是成本居高不下，**官方指导建议零售价是3500美元。**另外，虽然它相对体积较小，但仍重达500g, 已知iPhone 12重152g, 请问你的头上戴了几台iPhone 12 🤣
 
-![img](/pan_img/AR的前世今生/image_1.png)
+![img](/pan_img/AR的前世今生/image_1.webp)
 
 - **AR界的第一代黑"概念"**
 
 凭借着下面这“一条在体育馆地板跃起的大鲸鱼”，**Magic Leap** 成功塑造了一个 AR 黑科技公司的形象，以及足够激动人心的未来——从移动计算迁移到空间计算。裸眼AR的概念太具有震撼力，致使Magic Leap在视频发布的短短三个月内，迅速获得16亿美元融资，最高估值达64亿美元。然而巧妇难为无米之炊，在关键技术上没有取得核心突破的Magic Leap在2017年推出的Magic Leap one，其表现与其吹牛的效果差得太离谱，消费者纷纷给出了差评，这也给这家公司贴上了“骗子”的标签。
 
-![img](/pan_img/AR的前世今生/image_2.png)
+![img](/pan_img/AR的前世今生/image_2.webp)
 
 在上面的视频被人戳破，是视频后期合成之后，这家公司在AR界没有惊起任何浪花，就在写这篇文稿的当天，我在其官网上发现，Magic Leap将发布Magic Leap 2，这回他能否力挽狂澜，拯救自己“骗子”的形象，还得看过硬的产品！
 
-![img](/pan_img/AR的前世今生/image_3.png)
+![img](/pan_img/AR的前世今生/image_3.webp)
 
 - 国内AR的发展
 
@@ -66,11 +66,11 @@ tags:
 
 在今年的8月23日，Nreal推出了新品Nreal Air和Nreal X两款AR眼镜；发布首日，Nreal销售额突破了1200万。
 
-<img src="/pan_img/AR的前世今生/image_4.png" alt="img" style="zoom: 67%;" />    <img src="/pan_img/AR的前世今生/image_5.png" alt="img" style="zoom:67%;" />
+<img src="/pan_img/AR的前世今生/image_4.webp" alt="img" style="zoom: 67%;" />    <img src="/pan_img/AR的前世今生/image_5.webp" alt="img" style="zoom:67%;" />
 
 在9月21日，国内最早成立的AR企业之一亮亮视野发布了一款量产的AR字幕眼镜，也是全球第一款重量小于80g的双目波导无线一体机AR眼镜：听语者。主打听障者沟通。
 
-![img](/pan_img/AR的前世今生/image_6.png)
+![img](/pan_img/AR的前世今生/image_6.webp)
 
 国内的AR产业也在快速发展中，苹果老早就说2022年要发布AR眼镜，从年头等到了年尾，毛都没有；或许，我们可以把目光转向国内，期待国内的厂商能够发布一款改变世界的产品，就像当时iphone的出现一样。
 

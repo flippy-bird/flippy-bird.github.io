@@ -4,7 +4,7 @@ date: 2021-08-22 11:38:59
 tags: "C++"
 categories: "C++"
 description: C++基础知识合集记录
-cover: /covers/10.png
+cover: /covers/10.webp
 ---
 
 

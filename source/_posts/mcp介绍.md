@@ -2,7 +2,7 @@
 title: MCP
 date: 2025-11-25 14:02:24
 description: MCP协议的介绍以及实践
-cover: /covers/17.png
+cover: /covers/17.webp
 tags: 
     - Agent
     - MCP

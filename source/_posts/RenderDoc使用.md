@@ -4,7 +4,7 @@ date: 2021-11-17 22:54:16
 tags: "RenderDoc"
 categories: "工具使用"
 description: RenderDoc使用过程中的问题
-cover: /covers/23.png
+cover: /covers/23.webp
 ---
 
 ## RenderDoc使用
