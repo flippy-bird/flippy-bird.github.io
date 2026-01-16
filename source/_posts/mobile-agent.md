@@ -8,7 +8,9 @@ tags:
     - 端侧
 ---
 
+### AgentCPM
 
+> https://github.com/OpenBMB/AgentCPM
 
 
 

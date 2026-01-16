@@ -16,7 +16,9 @@ categories:
 
 #### 记忆
 
-长期记忆部分使用了mem0这个工具，当然，代码里面也提到了，可以使用阿里自家的ReMe这个记忆框架
+长期记忆部分使用了mem0这个工具，当然，代码里面也提到了，可以使用阿里自家的ReMe这个记忆框架；
+
+在26年1月份的更新中，添加了数据库的支持(使用Redis和Sql)，使用Redis应该是保存临时的对话历史信息，Sql是为了保存长期记忆；
 
 #### Agent
 
@@ -76,6 +78,14 @@ async def broadcast(self, msg: list[Msg] | Msg) -> None:
 #### Interrupt(中断介入)
 
 这个好像还不错，可以看一下，文档在https://doc.agentscope.io/tutorial/task_tool.html#interrupting-tool-execution， 对于工具执行的取消，是利用了asyncio的取消机制来实现的
+
+
+
+#### Hooks
+
+使用了python元编程来实现，在元类中添加一些
+
+
 
 #### Plan的实现
 

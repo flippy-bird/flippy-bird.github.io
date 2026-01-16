@@ -1,5 +1,5 @@
 ---
-title: LLM的plan调研
+title: Agent是如何做Plan的？
 date: 2025-12-08 14:58:33
 description: 对于agent的规划部分比较感兴趣，因此看了一下目前各个开源方案
 cover: /covers/16.png
