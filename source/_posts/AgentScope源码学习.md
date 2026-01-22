@@ -83,7 +83,116 @@ async def broadcast(self, msg: list[Msg] | Msg) -> None:
 
 #### Hooks
 
-使用了python元编程来实现，在元类中添加一些
+使用了python元编程来实现，在元类中添加一些wrap类或者函数，使得在**函数调用前后会执行一段注入的代码**，其实现主要是在/src/agentscope/agent/_agent_meta.py这个文件的 _wrap_with_hooks这个函数, 从下面的代码可以看到，依次执行pre-hooks, 原先的函数，post-hooks
+
+```python
+def _wrap_with_hooks(
+    original_func: Callable,
+) -> Callable:
+    """A decorator to wrap the original async function with pre- and post-hooks
+
+    Args:
+        original_func (`Callable`):
+            The original async function to be wrapped with hooks.
+    """
+    func_name = original_func.__name__.replace("_", "")
+
+    @wraps(original_func)
+    async def async_wrapper(
+        self: AgentBase,
+        *args: Any,
+        **kwargs: Any,
+    ) -> Any:
+        """The wrapped function, which call the pre- and post-hooks before and
+        after the original function."""
+
+        # Unify all positional and keyword arguments into a keyword arguments
+        normalized_kwargs = _normalize_to_kwargs(
+            original_func,
+            self,
+            *args,
+            **kwargs,
+        )
+
+        current_normalized_kwargs = normalized_kwargs
+
+        # pre-hooks
+        pre_hooks = list(
+            getattr(self, f"_instance_pre_{func_name}_hooks").values(),
+        ) + list(
+            getattr(self, f"_class_pre_{func_name}_hooks").values(),
+        )
+        for pre_hook in pre_hooks:
+            modified_keywords = await _execute_async_or_sync_func(
+                pre_hook,
+                self,
+                deepcopy(current_normalized_kwargs),
+            )
+            if modified_keywords is not None:
+                assert isinstance(modified_keywords, dict), (
+                    f"Pre-hook must return a dict of keyword arguments, rather"
+                    f" than {type(modified_keywords)} from hook "
+                    f"{pre_hook.__name__}"
+                )
+                current_normalized_kwargs = modified_keywords
+
+        # original function
+        # handle positional and keyword arguments specifically
+        args = current_normalized_kwargs.get("args", [])
+        kwargs = current_normalized_kwargs.get("kwargs", {})
+        others = {
+            k: v
+            for k, v in current_normalized_kwargs.items()
+            if k not in ["args", "kwargs"]
+        }
+        current_output = await original_func(
+            self,
+            *args,
+            **others,
+            **kwargs,
+        )
+
+        # post_hooks
+        post_hooks = list(
+            getattr(self, f"_instance_post_{func_name}_hooks").values(),
+        ) + list(
+            getattr(self, f"_class_post_{func_name}_hooks").values(),
+        )
+        for post_hook in post_hooks:
+            modified_output = await _execute_async_or_sync_func(
+                post_hook,
+                self,
+                deepcopy(current_normalized_kwargs),
+                deepcopy(current_output),
+            )
+            if modified_output is not None:
+                current_output = modified_output
+        return current_output
+
+    return async_wrapper
+```
+
+
+
+#### Agent Skill
+
+skill的思想是动态加载propmt，信息，我先跑了一个agentscope官方的例子，可以看到，当需要读取skill更多的内容时，使用框架内置的工具view_text_file读取SKILL.md中的内容，然后使用内置的bash工具execute_shell_command来执行相应的脚本
+
+![image-20260122103559281](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260122103559281.png)
+
+分析了SKILL.md的全部内容之后，按照SKILL.md里面的说明来进行工作了
+
+![image-20260122103937813](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260122103937813.png)
+
+对于代码的实现方面来看，agentscope在原先system prompt基础上拼接了skill相关的prompt
+
+src/agentscope/agent/_react_agent.py
+
+![image-20260122111910857](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260122111910857.png)
+
+![image-20260122112043982](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260122112043982.png)
+
+把这个prompt加载到系统的上下文之后，就不需要做其他事情了，因为上面的prompt也说明了，如果需要使用skill，那么需要应该需要调用 查看内容相关的工具去读取SKILL.md的内容，然后再进行下一步的操作了。这个实现还是蛮直观的
 
 
 

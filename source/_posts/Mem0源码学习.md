@@ -81,7 +81,7 @@ class Memory(MemoryBase):
             self.config.vector_store.provider, self.config.vector_store.config
         )
     self.llm = LlmFactory.create(self.config.llm.provider, self.config.llm.config)
-    if config.reranker:
+    if config.reranker:mem0 源码阅读：一个工程化记忆系统
         self.reranker = RerankerFactory.create(
             config.reranker.provider, 
             config.reranker.config
@@ -325,3 +325,9 @@ Please note to return the IDs in the output from the input IDs only and do not g
 #### 1.3 其它
 
 memory/telemetry.py 文件，这个文件的作用类似埋点，用来记录用户使用mem0的数据情况（在gemini cli， qwen code中看到同样的文件）
+
+
+
+### 可参考资料
+
+1. [mem0 源码阅读：一个工程化记忆系统](https://zhuanlan.zhihu.com/p/1981536258447655069?share_code=AYr5nKZGh82b&utm_psn=1996328005497283929)

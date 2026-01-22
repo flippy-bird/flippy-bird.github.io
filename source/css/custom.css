@@ -1,0 +1,26 @@
+/* 优化首页顶部图片加载 */
+#page-header.full_page {
+  /* 确保背景图片立即显示 */
+  will-change: background-image;
+  /* 添加过渡效果，避免闪烁 */
+  transition: background-image 0.3s ease-in-out;
+  /* 临时禁用 fixed 以解决渲染问题，如果不需要视差效果可以保留 */
+  /* background-attachment: scroll !important; */
+}
+
+/* 预加载图片的占位样式 */
+#page-header.full_page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: inherit;
+  background-size: inherit;
+  background-position: inherit;
+  background-repeat: inherit;
+  opacity: 0;
+  z-index: -1;
+  pointer-events: none;
+}

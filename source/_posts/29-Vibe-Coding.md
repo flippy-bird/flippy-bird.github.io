@@ -2,6 +2,7 @@
 title: Vibe Coding 相关
 date: 2026-01-14 16:10:43
 description: 总结一些Vibe Coding的一些使用经验
+cover: /covers/29.webp
 tags:
     - vibe coding
 categories:
@@ -139,3 +140,9 @@ Detailed instructions for the agent.
 ### 参考资料
 
 1. [认知重建：Speckit 用了三个月，我放弃了——走出工具很强但用不好的困境](https://zhuanlan.zhihu.com/p/1993009461451831150)
+1. [面试问 Vibe Coding？这才是满分回答](https://zhuanlan.zhihu.com/p/1995647432780959913?share_code=1mWeXCbTVQYER&utm_psn=1996038359177512050)
+1. [easy-vibe](https://github.com/datawhalechina/easy-vibe)
+1. [aicodeguide](https://github.com/automata/aicodeguide)
+1. [awesome-vibe-coding](https://github.com/filipecalegario/awesome-vibe-coding)
+1. [vibe-coding-cn](https://github.com/2025Emma/vibe-coding-cn)
+
