@@ -79,7 +79,7 @@ async def broadcast(self, msg: list[Msg] | Msg) -> None:
 
 这个好像还不错，可以看一下，文档在https://doc.agentscope.io/tutorial/task_tool.html#interrupting-tool-execution， 对于工具执行的取消，是利用了asyncio的取消机制来实现的
 
-具体实现的代码大概如下：(代码路径：/home/pan/Documents/2025/github/agent/agentscope/src/agentscope/agent/_agent_base.py),  首先这里的 self. _reply_task获取到当前的任务，用于后面的中断处理，从代码也可以看到，self.reply里面发生了中断会触发 raise asyncio.CancellerError，然后这个函数去捕获，然后在这个函数里面去触发执行handle_interrupt的任务 （这个可以在react_agent里面的reasoning和acting步骤可以找到例子）
+具体实现的代码大概如下：(代码路径：agentscope/src/agentscope/agent/_agent_base.py),  首先这里的 self. _reply_task获取到当前的任务，用于后面的中断处理，从代码也可以看到，self.reply里面发生了中断会触发 raise asyncio.CancellerError，然后这个函数去捕获，然后在这个函数里面去触发执行handle_interrupt的任务 （这个可以在react_agent里面的reasoning和acting步骤可以找到例子）
 
 ```python
 async def __call__(self, *args: Any, **kwargs: Any) -> Msg:
