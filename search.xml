@@ -4,7 +4,7 @@
   
     
     <entry>
-      <title>35.大模型推理部署</title>
+      <title>大模型推理部署</title>
       <link href="/2026/01/26/35-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E9%83%A8%E7%BD%B2/"/>
       <url>/2026/01/26/35-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E9%83%A8%E7%BD%B2/</url>
       
@@ -31,7 +31,7 @@
     
     
     <entry>
-      <title>34.模型推理基本知识-tensorRT</title>
+      <title>模型推理基本知识-tensorRT</title>
       <link href="/2026/01/26/34-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86-tensorRT/"/>
       <url>/2026/01/26/34-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86-tensorRT/</url>
       
@@ -56,7 +56,7 @@
     
     
     <entry>
-      <title>33.模型推理基本知识-CUDA</title>
+      <title>模型推理基本知识-CUDA</title>
       <link href="/2026/01/26/33-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86-CUDA/"/>
       <url>/2026/01/26/33-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86-CUDA/</url>
       
@@ -81,7 +81,7 @@
     
     
     <entry>
-      <title>32.模型推理基本知识-量化</title>
+      <title>模型推理基本知识-量化</title>
       <link href="/2026/01/26/32-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86-%E9%87%8F%E5%8C%96/"/>
       <url>/2026/01/26/32-%E6%A8%A1%E5%9E%8B%E6%8E%A8%E7%90%86%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86-%E9%87%8F%E5%8C%96/</url>
       
