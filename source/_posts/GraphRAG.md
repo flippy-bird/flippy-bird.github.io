@@ -60,3 +60,9 @@ categories:
 ## 3. 项目源码学习
 
 - [ ] TODO
+
+
+
+## 可参考资料
+
+1. https://github.com/gusye1234/nano-graphrag

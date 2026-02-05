@@ -115,6 +115,40 @@ async def interrupt(self, msg: Msg | list[Msg] | None = None) -> None:
 
 
 
+补充一些task.cancel()的知识点：Python 的 async 并没有真正的线程级中断机制，所谓 cancel 是一种 *协作式取消*。
+
+- `task.cancel()` 只是给任务打一个 *取消标记*，
+- 只有当代码执行到 `await` 时，才会真正抛出 `CancelledError` 停下来。
+
+```python
+task.cancel()
+   ↓
+设置 cancelled 标志
+   ↓
+下一次 await
+   ↓
+抛 CancelledError
+   ↓
+函数中断
+```
+
+因此一般这样写
+
+```python
+async def a():
+    try:
+        await f1()
+        await f2()
+        await f3()
+    except asyncio.CancelledError:
+        print("清理资源")
+        await cleanup()
+        raise   # 这个raise一定要
+
+```
+
+
+
 
 
 #### Hooks

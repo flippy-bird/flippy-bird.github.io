@@ -18,3 +18,4 @@ tags:
 5. [memu](https://github.com/NevaMind-AI/memU)
 6. [letta](https://github.com/letta-ai/letta)
 7. [北大出品，最火、最全的Agent记忆综述！！](https://github.com/Shichun-Liu/Agent-Memory-Paper-List) 相关[微信公众号地址](https://mp.weixin.qq.com/s/4q4bgDEOzTPUubnaYzG4wA)
+8. [最近很多的clewdbot的记忆实现](https://zhuanlan.zhihu.com/p/1999506236597637279)
