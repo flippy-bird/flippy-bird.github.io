@@ -1,7 +1,7 @@
 ---
-title: 什么？没有时间学习openclawd，那就来学习nanobot吧！ 
+title: nanobot源码学习
 date: 2026-02-06 11:29:52
-description: 基于openclawd原理使用python 4000行代码实现的简易openclawd
+description: 什么？没有时间学习openclawd，那就来学习nanobot吧！ 
 cover: /covers/0.webp
 tags:
     - agent
