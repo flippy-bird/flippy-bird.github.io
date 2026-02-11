@@ -2,6 +2,7 @@
 title: 模型推理基本知识-CUDA
 date: 2026-01-26 10:13:33
 description: 学习CUDA相关的一些笔记
+cover: /covers/33.webp
 tags:
     - inference
 categories:

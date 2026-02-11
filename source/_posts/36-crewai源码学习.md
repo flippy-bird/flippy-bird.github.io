@@ -2,6 +2,7 @@
 title: crewai源码学习
 date: 2026-02-03 11:07:51
 description: 记录阅读crewai源码的笔记
+cover: /covers/36.webp
 tags:
     - agent
 categories:
