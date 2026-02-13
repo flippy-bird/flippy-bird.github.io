@@ -317,3 +317,4 @@ def stop(self) -> None:
 ### 其它可参考资料
 
 1. [Nanobot 项目深度解读报告](https://zhuanlan.zhihu.com/p/2003494508445336693?share_code=FBP8qWqPKJN6&utm_psn=2004357085224276031)
+1. [[nanoclaw](https://github.com/qwibitai/nanoclaw)]
