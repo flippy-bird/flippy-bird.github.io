@@ -21,3 +21,4 @@ categories:
 
 OK,先找到源码Agent部分，位于`backend/core/agents/`目录下，既然这个目录下有`api.py`文件，这个应该是入口，从这个文件出发，找了一个`unified_agent_start`函数，里面实际执行的函数是`start_agent_run`这个函数，然后这个函数里面实际会执行操作的函数是`_background_setup_and_execute`
 
+![image-20260213183340094](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260213183340094.png)
