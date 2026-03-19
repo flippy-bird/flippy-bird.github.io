@@ -319,3 +319,4 @@ def stop(self) -> None:
 1. [Nanobot 项目深度解读报告](https://zhuanlan.zhihu.com/p/2003494508445336693?share_code=FBP8qWqPKJN6&utm_psn=2004357085224276031)
 1. [[nanoclaw](https://github.com/qwibitai/nanoclaw)]
 1. [[从nanobot和 pi-mono解剖 LLM Agent 核心](https://zhuanlan.zhihu.com/p/2007047649933693864)]
+1. [从架构到代码：深入理解 OpenClaw 的双源记忆系统](https://mp.weixin.qq.com/s/Ok3VwXft5fvvNWLBL6r2AA)

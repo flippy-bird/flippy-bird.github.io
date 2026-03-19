@@ -92,3 +92,5 @@ graph = builder.compile()
 2.[破除AI Agent自主操控风险：万字解读LangGraph“人工干预”机制 ，附零基础实战](https://mp.weixin.qq.com/s/m37YhDsKsQn2HWuV7LKwgg)
 
 3.[【AI Agent设计】详源码langchain 1.1构建路由模式多智能体的多源知识库系统（附详细注释完整源码）](https://mp.weixin.qq.com/s/iEk_SSJS_ZYt3QVnFo3gMA)
+
+4. 一个实际的项目：[deer-flow](https://github.com/bytedance/deer-flow)  agent模块很简单，agent核心模块只是使用了create_agent 函数
