@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>开发一个Blender插件(1) | 大潘子的文字角落</title><meta name="author" content="Pan"><meta name="copyright" content="Pan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Blender 模块要是用blender模块，首先要导入blender库 1import bpy   DataContextbpy.context  只能访问 当前激活 的 area 中的数据 获取到的数据是readonly（只读的）  跨域的访问 context.scene Operatorsbpy.ops 所有的操作指令，像按钮，建模操作，删除创建模型。。。 Typesbpy.types 所有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开发一个Blender插件(1)">
+<meta property="og:url" content="https://flippy-bird.github.io/2023/03/05/14-1-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AABlender%E6%8F%92%E4%BB%B6-1/index.html">
+<meta property="og:site_name" content="大潘子的文字角落">
+<meta property="og:description" content="Blender 模块要是用blender模块，首先要导入blender库 1import bpy   DataContextbpy.context  只能访问 当前激活 的 area 中的数据 获取到的数据是readonly（只读的）  跨域的访问 context.scene Operatorsbpy.ops 所有的操作指令，像按钮，建模操作，删除创建模型。。。 Typesbpy.types 所有">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://flippy-bird.github.io/img/avatar.png">
+<meta property="article:published_time" content="2023-03-05T06:44:06.000Z">
+<meta property="article:modified_time" content="2026-03-05T06:55:18.008Z">
+<meta property="article:author" content="Pan">
+<meta property="article:tag" content="Blender">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://flippy-bird.github.io/img/avatar.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "开发一个Blender插件(1)",
+  "url": "https://flippy-bird.github.io/2023/03/05/14-1-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AABlender%E6%8F%92%E4%BB%B6-1/",
+  "image": "https://flippy-bird.github.io/img/avatar.png",
+  "datePublished": "2023-03-05T06:44:06.000Z",
+  "dateModified": "2026-03-05T06:55:18.008Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Pan",
+      "url": "https://flippy-bird.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favion.png"><link rel="canonical" href="https://flippy-bird.github.io/2023/03/05/14-1-%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AABlender%E6%8F%92%E4%BB%B6-1/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="stylesheet" href="/css/index.css?v=5.5.2"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '开发一个Blender插件(1)',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><link rel="preload" as="image" href="/img/fengmian.webp" fetchpriority="high"><link rel="stylesheet" href="/css/custom.css"><meta name="generator" content="Hexo 8.1.1"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">44</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">24</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">11</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(/img/fengmian.webp);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">大潘子的文字角落</span></a><a class="nav-page-title" href="/"><span class="site-name">开发一个Blender插件(1)</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-graduation-cap"></i><span> 博文</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/"><i class="fa-fw fa fa-archive"></i><span> 分类</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/archives/"><i class="fa-fw fa fa-folder-open"></i><span> 归档</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/links/"><i class="fa-fw fa fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/comment/"><i class="fa-fw fa fa-paper-plane"></i><span> 留言板</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于笔者</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">开发一个Blender插件(1)</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-03-05T06:44:06.000Z" title="发表于 2023-03-05 14:44:06">2023-03-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-05T06:55:18.008Z" title="更新于 2026-03-05 14:55:18">2026-03-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Blender%E6%8F%92%E4%BB%B6%E5%BC%80%E5%8F%91/">Blender插件开发</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">总字数:</span><span class="word-count">358</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>1分钟</span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h3 id="Blender-模块"><a href="#Blender-模块" class="headerlink" title="Blender 模块"></a>Blender 模块</h3><p>要是用blender模块，首先要导入blender库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bpy</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260305145458917.png" alt="image-20260305145458917" loading='lazy'></p>
+<h4 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h4><h4 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h4><p>bpy.context</p>
+<ul>
+<li>只能访问 当前激活 的 area 中的数据</li>
+<li>获取到的数据是readonly（只读的）</li>
+</ul>
+<p>跨域的访问</p>
+<p>context.scene</p>
+<h4 id="Operators"><a href="#Operators" class="headerlink" title="Operators"></a>Operators</h4><p>bpy.ops</p>
+<p>所有的操作指令，像按钮，建模操作，删除创建模型。。。</p>
+<h4 id="Types"><a href="#Types" class="headerlink" title="Types"></a>Types</h4><p>bpy.types</p>
+<p>所有实现的“class类模板”定义</p>
+<h4 id="Props"><a href="#Props" class="headerlink" title="Props"></a>Props</h4><p>bpy.props</p>
+<p>blender中的properties（属性）管理</p>
+<h5 id="RNA属性"><a href="#RNA属性" class="headerlink" title="RNA属性"></a>RNA属性</h5><ul>
+<li>对bpy.types模板类的属性进行扩充</li>
+<li>所有的bpy.types模板的子类均有该属性</li>
+<li>需要提前“声明”</li>
+<li>Int, float, string, bool, enum</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">bpy.props.IntProperty</span><br><span class="line">bpy.props.FloatProperty</span><br><span class="line">bpy.props.EnumProperty</span><br><span class="line"><span class="comment"># </span></span><br><span class="line">bpy.props.PointerProperty</span><br><span class="line"></span><br><span class="line"><span class="comment"># 数组</span></span><br><span class="line">bpy.props.IntVectorProperty</span><br><span class="line">bpy.props.FloatVectorProperty</span><br><span class="line"></span><br><span class="line">bpy.props.removeProperty</span><br><span class="line"><span class="keyword">import</span> bpy</span><br><span class="line"></span><br><span class="line">bpy.types.Object.myInt = bpy.props.IntProperty(</span><br><span class="line">           name = <span class="string">&#x27;test&#x27;</span>,</span><br><span class="line">           <span class="built_in">max</span> = <span class="number">10</span>, </span><br><span class="line">           <span class="built_in">min</span> = <span class="number">1</span>, </span><br><span class="line">           default = <span class="number">5</span></span><br><span class="line"> )</span><br><span class="line"> </span><br><span class="line"> <span class="comment"># 对所有object都有该属性</span></span><br><span class="line"> </span><br><span class="line"> bpy.types.Mesh.myFloat = bpy.props.FloatProperty(</span><br><span class="line">           name = <span class="string">&#x27;float&#x27;</span>,</span><br><span class="line">           <span class="built_in">max</span> = <span class="number">10.0</span>,</span><br><span class="line">           <span class="built_in">min</span> = -<span class="number">10.0</span>,</span><br><span class="line">           default = <span class="number">1</span></span><br><span class="line"> )</span><br><span class="line"> </span><br><span class="line"> <span class="comment">#  对所有Mesh均有该属性</span></span><br><span class="line"> </span><br></pre></td></tr></table></figure>
+
+<h5 id="ID属性"><a href="#ID属性" class="headerlink" title="ID属性"></a>ID属性</h5><ul>
+<li>对bpy.types 模板实例类的属性进行扩展</li>
+<li>只有单一的实例类才能拥有该属性</li>
+<li>不要要提前“声明”</li>
+<li>Int, float, string. (没有enum和bool)</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> bpy</span><br><span class="line"></span><br><span class="line">bpy.data.objects[<span class="string">&#x27;Cube&#x27;</span>][<span class="string">&#x27;idString&#x27;</span>] = <span class="string">&#x27;hello cube&#x27;</span></span><br><span class="line"><span class="comment"># 只针对‘Cube’这个物体有idString属性</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Utils"><a href="#Utils" class="headerlink" title="Utils"></a>Utils</h4><p>bpy.utils</p>
+<p>Blender 自身的工具</p>
+<p>一般用到的是</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bpy.utils.register_class()</span><br><span class="line">bpy.utils.unregirster_class()</span><br></pre></td></tr></table></figure>
+
+<h4 id="Path"><a href="#Path" class="headerlink" title="Path"></a>Path</h4><p>bpy.path</p>
+<p>系统文件系统的访问</p>
+<p>bpy.path.abspath</p>
+<p>bpy.path.basename</p>
+<p>bpy.path.relpath</p>
+<h3 id="Blender-UI开发"><a href="#Blender-UI开发" class="headerlink" title="Blender UI开发"></a>Blender UI开发</h3><h4 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h4><p>Operator 命名规范 ： <strong>OT</strong></p>
+<p>Menu 命名规范：<strong>MT</strong></p>
+<p>header命名规范：<strong>HT</strong></p>
+<p>panel命名规范：<strong>PT</strong></p>
+<h3 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+</article><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Blender/">Blender</a></div><div class="post-share"><div class="social-share" data-image="/img/avatar.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2023/03/05/13-1-%E9%AA%A8%E9%AA%BC%E5%8A%A8%E7%94%BB/" title="骨骼动画"><img class="cover" src="/covers/25.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">骨骼动画</div></div><div class="info-2"><div class="info-item-1"> Skeletal Animation  插值 ​                                                   关键帧                                                   插值动画 1a = a * (1 - t) + b * t  对于旋转，我们不能使用向量，即欧拉角来表示，因为分别对三个方向插值，最后的结果不是线性的，因此对于旋转，需要使用四元数来表示。 Skin、bones、keyframes 它这篇文章是以Assimp 来存储模型动画数据的  Assimp 存储动画数据的方式    一个顶点可能会被多个骨骼点影响，通过下面的方式进行存储   mesh里面存储会影响该mesh的骨骼点，而每个骨骼点会记录其影响的顶点ID以及权重，上面的offsetMatrix是一个将顶点从模型空间变换到骨骼点的空间   代码部分Vertex shader123456789101112131415161718192021222324252627282930313233343536373839#version...</div></div></div></a><a class="pagination-related" href="/2022/09/27/5-AR%E7%9A%84%E5%89%8D%E4%B8%96%E4%BB%8A%E7%94%9F/" title="AR的前世今生"><img class="cover" src="/covers/9.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">AR的前世今生</div></div><div class="info-2"><div class="info-item-1">2022年的时候，元宇宙很火，让我们简单聊一聊元宇宙的发展吧</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">why join the navy if you can be a pirate</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Blender-%E6%A8%A1%E5%9D%97"><span class="toc-text">Blender 模块</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Data"><span class="toc-text">Data</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Context"><span class="toc-text">Context</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Operators"><span class="toc-text">Operators</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Types"><span class="toc-text">Types</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Props"><span class="toc-text">Props</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#RNA%E5%B1%9E%E6%80%A7"><span class="toc-text">RNA属性</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#ID%E5%B1%9E%E6%80%A7"><span class="toc-text">ID属性</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Utils"><span class="toc-text">Utils</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Path"><span class="toc-text">Path</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Blender-UI%E5%BC%80%E5%8F%91"><span class="toc-text">Blender UI开发</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E5%90%8D%E8%A7%84%E8%8C%83"><span class="toc-text">命名规范</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E5%AE%83"><span class="toc-text">其它</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/03/03/41-cline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="cline源码学习"><img src="/covers/4.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="cline源码学习"/></a><div class="content"><a class="title" href="/2026/03/03/41-cline%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="cline源码学习">cline源码学习</a><time datetime="2026-03-03T03:23:02.000Z" title="发表于 2026-03-03 11:23:02">2026-03-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/25/40.RAG%E8%BF%9B%E5%B1%95%E8%B7%9F%E8%B8%AA/" title="RAG进展跟踪"><img src="/covers/3.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="RAG进展跟踪"/></a><div class="content"><a class="title" href="/2026/02/25/40.RAG%E8%BF%9B%E5%B1%95%E8%B7%9F%E8%B8%AA/" title="RAG进展跟踪">RAG进展跟踪</a><time datetime="2026-02-25T03:16:34.000Z" title="发表于 2026-02-25 11:16:34">2026-02-25</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/13/39-suna%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="suna源码学习"><img src="/covers/2.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="suna源码学习"/></a><div class="content"><a class="title" href="/2026/02/13/39-suna%E6%BA%90%E7%A0%81%E5%AD%A6%E4%B9%A0/" title="suna源码学习">suna源码学习</a><time datetime="2026-02-13T05:46:55.000Z" title="发表于 2026-02-13 13:46:55">2026-02-13</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/12/38-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" title="大模型强化学习"><img src="/covers/1.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="大模型强化学习"/></a><div class="content"><a class="title" href="/2026/02/12/38-%E5%A4%A7%E6%A8%A1%E5%9E%8B%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0/" title="大模型强化学习">大模型强化学习</a><time datetime="2026-02-12T09:49:23.000Z" title="发表于 2026-02-12 17:49:23">2026-02-12</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2026/02/06/37-nanobot%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="nanobot源码学习"><img src="/covers/0.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="nanobot源码学习"/></a><div class="content"><a class="title" href="/2026/02/06/37-nanobot%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" title="nanobot源码学习">nanobot源码学习</a><time datetime="2026-02-06T03:29:52.000Z" title="发表于 2026-02-06 11:29:52">2026-02-06</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.2"></script><script src="/js/main.js?v=5.5.2"></script><div class="js-pjax"></div><img src="/img/fengmian.webp" alt="" style="position:absolute;width:0;height:0;opacity:0;pointer-events:none;" loading="eager" fetchpriority="high" onload="this.style.display='none'"></div><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body></html>
