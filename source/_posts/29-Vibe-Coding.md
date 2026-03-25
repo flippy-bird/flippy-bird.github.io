@@ -133,6 +133,14 @@ Detailed instructions for the agent.
 
 
 
+### 一些好用的skills
+
+#### understand anything
+
+阅读项目，代码的skills
+
+> https://github.com/Lum1104/Understand-Anything
+
 
 
 
@@ -145,4 +153,5 @@ Detailed instructions for the agent.
 1. [aicodeguide](https://github.com/automata/aicodeguide)
 1. [awesome-vibe-coding](https://github.com/filipecalegario/awesome-vibe-coding)
 1. [vibe-coding-cn](https://github.com/2025Emma/vibe-coding-cn)
+1. [谷歌提出5种Skill的设计模式，Skill的高阶编写技巧](https://zhuanlan.zhihu.com/p/2017716306569348763)
 
