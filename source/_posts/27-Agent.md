@@ -537,7 +537,9 @@ def auto_compact(messages: list) -> list:
 
 
 
+### Harness
 
+> https://github.com/HKUDS/OpenHarness
 
 
 
@@ -550,6 +552,8 @@ def auto_compact(messages: list) -> list:
 1. https://github.com/datawhalechina/hello-agents
 2. https://github.com/huggingface/agents-course
 3. [如何从零开始实现一个 AI Agent 框架（理论+实践）](https://mp.weixin.qq.com/s/z1aDaPFhjYb2cv-9bFbdaQ)
+4. [一文讲透如何构建Harness——六大组件全解析](https://mp.weixin.qq.com/s/HwqEaXSGkcYgUNrzB2okuA)
+5. [逆向深扒Claude Code源码，我发现了什么！？](https://mp.weixin.qq.com/s/hskSjAkezaV2epVzUq6ziw)
 
 #### 具体实践
 
@@ -568,6 +572,7 @@ def auto_compact(messages: list) -> list:
 1. [ChatDev](https://github.com/OpenBMB/ChatDev/tree/main)
 1. 框架是plan execute reflection [[agentUniverse](https://github.com/agentuniverse-ai/agentUniverse)] 
 1. 一个完整的前后端项目： [CoPaw](https://github.com/agentscope-ai/CoPaw)， 阿里基于agentscope agent和openclawed思想搭建的个人助手项目：是一个完整的前后端项目，后端是fastapi，前端是vite + React
+1. claude code 源码：[盘一下Claude Code源码里的8个隐藏新功能。](https://mp.weixin.qq.com/s/5lAB7CPkX2FL6sH2W6H9wQ)   https://github.com/instructkr/claude-code
 
 #### 其它
 

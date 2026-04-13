@@ -116,7 +116,7 @@ async def extract_entities(chunks, global_config, ...):
     return chunk_results  # [(nodes1, edges1), (nodes2, edges2), ...]
 ```
 
-可以看到，代码做了防御性变成，`_process_extraction_result`对llm可能得各种情形都进行了处理，**同时考虑到chunks之前的处理互补干扰，因此这里还使用了`asyncio.Semaphore`来实现并发执行**
+可以看到，代码做了防御性变成，`_process_extraction_result`对llm可能得各种情形都进行了处理，**同时考虑到chunks之前的处理互不干扰，因此这里还使用了`asyncio.Semaphore`来实现并发执行**
 
 得到所有的实体和关系后，合并入库`merge_nodes_and_edges`, 这里函数里面有比较多的逻辑，可以在源码部分详细查看，这里只分析主要代码；
 

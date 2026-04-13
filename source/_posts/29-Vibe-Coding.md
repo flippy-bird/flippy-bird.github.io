@@ -133,6 +133,18 @@ Detailed instructions for the agent.
 
 
 
+### Ralph 
+
+**AI 自我迭代**
+
+> [从 Prompt 到 Ralph Loop：一文了解 AI 的循环编程](https://zhuanlan.zhihu.com/p/1997000076044825852)
+
+![image-20260413102826371](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260413102826371.png)
+
+Raplh loop 可以让你的AI coding工具一直运行，直到实现规定的所有结束条件满足，因此prompt的编写很关键，一定需要定义好清晰明确的结束条件；(疑问：编程工具不是常用的ReAct范式嘛，不就是一个循环，为什么还需要这个新的Raplh,原因是当我输入一些话让Claude Code去实现时, Claude Code在实现中途，会停止下来，不断地去征询你的意见，这样的话，就会出现打断的情况)
+
+
+
 ### 一些好用的skills
 
 #### understand anything
@@ -154,4 +166,6 @@ Detailed instructions for the agent.
 1. [awesome-vibe-coding](https://github.com/filipecalegario/awesome-vibe-coding)
 1. [vibe-coding-cn](https://github.com/2025Emma/vibe-coding-cn)
 1. [谷歌提出5种Skill的设计模式，Skill的高阶编写技巧](https://zhuanlan.zhihu.com/p/2017716306569348763)
+1. [当整个团队开始 0 人工Coding：一份万字AI Native研发实战手册](https://mp.weixin.qq.com/s/Tq0sW8uorXh0kfcNF3blXg)  （主要使用了spec这种方式去进行）
+1. [Superpowers源码分析](https://zhuanlan.zhihu.com/p/2022427159092831141)
 

@@ -87,6 +87,22 @@ graph = builder.compile()
 
 
 
+### 实战项目-deer-flow
+
+> 对应的文档：
+>
+> https://deerflow-book.myhubs.dev/ 
+>
+> https://github.com/coolclaws/deerflow-book
+
+我觉得这是一个很
+
+
+
+
+
+
+
 ### 可学习资料
 1.[Multi-Agent全面爆发！一文详解多智能体核心架构及LangGraph框架](https://mp.weixin.qq.com/s/XhFbLTLcSjDj0r3KGT9EOg)
 2.[破除AI Agent自主操控风险：万字解读LangGraph“人工干预”机制 ，附零基础实战](https://mp.weixin.qq.com/s/m37YhDsKsQn2HWuV7LKwgg)
