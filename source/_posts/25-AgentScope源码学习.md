@@ -283,6 +283,69 @@ def _wrap_with_hooks(
     return async_wrapper
 ```
 
+上面的_normalize_to_kwargs函数，我觉得也可以学习一下,将函数调用转化成标准的完整的参数调用方式，方便hook函数进行操作
+
+```python
+import inspect
+
+def _normalize_to_kwargs(
+    func: Callable,
+    self: Any,
+    *args: Any,
+    **kwargs: Any,
+) -> dict:
+    """Normalize the provided positional and keyword arguments into a
+    keyword arguments dictionary that matches the function signature."""
+    sig = inspect.signature(func)
+    try:
+        # Bind the provided arguments to the function signature
+        bound = sig.bind(self, *args, **kwargs)
+        # Apply the default values for parameters
+        bound.apply_defaults()
+
+        # Return the arguments in a dictionary format
+        res = dict(bound.arguments)
+        res.pop("self")
+        return res
+
+    except TypeError as e:
+		# 错误处理，我这里省略了
+```
+
+然后构造一个元基类，通过元编程的方式实现了hooks,代码如下
+
+```python
+class _AgentMeta(type):
+    """The agent metaclass that wraps the agent's reply, observe and print
+    functions with pre- and post-hooks."""
+
+    def __new__(mcs, name: Any, bases: Any, attrs: Dict) -> Any:
+        """Wrap the agent's functions with hooks."""
+
+        for func_name in [
+            "reply",
+            "print",
+            "observe",
+        ]:
+            if func_name in attrs:
+                attrs[func_name] = _wrap_with_hooks(attrs[func_name])
+
+        return super().__new__(mcs, name, bases, attrs)
+    
+ ## 解释
+#- __`mcs`__ (metaclass class): 元类自身的引用，类似于普通类方法中的 `self`。它代表的是 `_AgentMeta` 这个元类本身。
+#- __`name`__ (str): 要创建的类的名称。例如，如果用这个元类创建一个名为 `MyAgent` 的类，那么 `name` 就是字符串 `"MyAgent"`。
+#- __`bases`__ (tuple): 基类元组，包含新类继承的所有父类。例如，如果定义 `class MyAgent(AgentBase)`，那么 `bases` 就是 `(AgentBase,)`。
+#- __`attrs`__ (dict): 类属性字典，包含新类中定义的所有属性和方法。键是属性/方法名，值是对应的值或函数对象。
+
+```
+
+
+
+
+
+
+
 
 
 #### Agent Skill

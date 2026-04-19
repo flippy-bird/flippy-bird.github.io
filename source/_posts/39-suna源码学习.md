@@ -1,6 +1,6 @@
 ---
 title: suna源码学习
-date: 2026-02-13 13:46:55
+date: 2025-10-24 13:46:55
 description: suna一个比较完整的agent项目，包含前后端，学习一下
 cover: /covers/2.webp
 tags:

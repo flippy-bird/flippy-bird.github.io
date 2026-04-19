@@ -1,6 +1,7 @@
 ---
 title: 开发一个Blender插件(1)
 date: 2023-03-05 14:44:06
+description: "blender插件开发"
 tags:
     - Blender
 categories:

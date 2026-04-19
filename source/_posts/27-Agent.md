@@ -541,6 +541,22 @@ def auto_compact(messages: list) -> list:
 
 > https://github.com/HKUDS/OpenHarness
 
+### 自进化Agent
+
+> [一文搞懂Hermes：新顶流Agent如何从经验中自我进化](https://mp.weixin.qq.com/s/yHva-zLaRTxe8b4HSUr86Q?poc_token=HIjy3mmjYAPhz51RpL_Xx7T4pqjqe2ggbF0FqdSU)
+
+![image-20260415101358284](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260415101358284.png)
+
+用一句话概括这个系统的本质：Skills 系统让 AI Agent 像人类专家一样积累经验——把成功的做法写成 SOP，在使用中持续修订，并且可以分享给其他人。
+
+#### 为什么不能每次都扫描文件系统？？
+
+一个用户可能有几十甚至上百个 Skill。每次对话启动时都去递归扫描 ~/.hermes/skills/ 目录、解析每个 SKILL.md 的 YAML frontmatter，这个开销不可忽视——尤其是在消息平台（Telegram、Discord）上，Gateway 进程需要同时服务多个用户的多个对话。
+
+Hermes 的解决方案是两层缓存：
+
+![image-20260415101942128](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260415101942128.png)
+
 
 
 

@@ -1,8 +1,10 @@
 ---
-title: 43.Agent相关的数据库
+title: Agent相关的数据库
 date: 2026-03-30 11:05:37
 description: 数据库,图数据库,向量数据库等等数据库相关内容
+cover: /covers/6.webp
 tags:
+    - agent
 ---
 
 

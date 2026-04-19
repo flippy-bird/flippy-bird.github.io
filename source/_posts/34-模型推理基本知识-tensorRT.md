@@ -1,6 +1,6 @@
 ---
 title: 模型推理基本知识-tensorRT
-date: 2026-01-26 10:14:09
+date: 2024-06-26 10:14:09
 description: 学习TensorRT相关的知识
 cover: /covers/34.webp
 tags:

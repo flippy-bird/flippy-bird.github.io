@@ -1,6 +1,7 @@
 ---
 title: shader noise
 date: 2021-09-04 13:00:34
+description: "shader noise算法"
 tags: "shader"
 categories: "算法"
 cover: /covers/24.webp
