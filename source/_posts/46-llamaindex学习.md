@@ -2,6 +2,7 @@
 title: llamaindex学习
 date: 2024-12-22 09:58:47
 description: llamaindex框架学习
+cover: /covers/9.webp
 tags:
     - RAG
 ---

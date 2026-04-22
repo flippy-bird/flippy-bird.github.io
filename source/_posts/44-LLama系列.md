@@ -2,6 +2,7 @@
 title: LLama系列
 date: 2025-07-21 20:17:40
 description: LLama系列模型的跟踪
+cover: /covers/7.webp
 tags:
     - LLM
 ---

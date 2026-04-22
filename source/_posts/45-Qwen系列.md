@@ -2,6 +2,7 @@
 title: Qwen系列
 date: 2025-09-05 20:21:40
 description: Qwen系列模型的跟踪
+cover: /covers/8.webp
 tags:
     - LLM
 ---
