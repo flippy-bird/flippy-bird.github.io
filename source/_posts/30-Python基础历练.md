@@ -111,4 +111,13 @@ Celery 本质上是 **Python 里最经典、最成熟的分布式任务队列框
 ### async 编程
 
 > [一文读懂Python async/await异步编程](https://zhuanlan.zhihu.com/p/698683843)
+>
+> [Python Async，不弄玄虚](https://zhuanlan.zhihu.com/p/1894414626248175945?share_code=17mYGG8WSJOhy&utm_psn=1914364043667412640)
 
+
+
+### git 下载
+
+服务器上下载比较慢，使用镜像
+
+![image-20260421193737348](https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260421193737348.png)
