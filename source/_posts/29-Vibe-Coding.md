@@ -155,6 +155,16 @@ Raplh loop 可以让你的AI coding工具一直运行，直到实现规定的所
 
 
 
+### gstack
+
+> https://github.com/garrytan/gstack
+
+他里面有23个skills，分别承担不同的角色，具体的使用案例可以看官方的介绍：
+
+
+
+
+
 
 
 ### 参考资料
