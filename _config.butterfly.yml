@@ -170,8 +170,7 @@ subtitle:
   source: false
   # If you close the typewriter effect, the subtitle will only show the first line of sub
   sub:
-    - 自小刺头深草里
-    - 时人不识凌云木
+    - Vibe first, code later.
 
 # Article layout on the homepage
 # 1: Cover on the left, info on the right
@@ -200,7 +199,7 @@ index_post_content:
 toc:
   post: true
   page: false
-  number: false
+  number: true
   expand: false
   # Only for post
   style_simple: false

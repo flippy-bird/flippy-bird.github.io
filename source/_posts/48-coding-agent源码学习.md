@@ -108,6 +108,107 @@ Dynamic Workflow 把编排逻辑从 prompt 变成代码。主 Agent 生成一段
 
 
 
+## Hermes Agent
+
+> https://github.com/NousResearch/hermes-agent
+
+### 源码阅读
+
+#### /steer 功能实现
+
+`/steer` 是 Hermes 的一个运行时指令，用户可以在模型还在生成回复时发送，用来**中途修正模型的行为方向**（比如"换个思路"、"注意这个约束"等），而不打断当前对话轮次。
+
+<img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260615151333182.png" alt="image-20260615151333182" style="zoom:50%;" />
+
+1. **倒序扫描** `messages`，找到最后一条 `role: "tool"` 的消息 
+2. **将 steer 追加到该 tool 消息的 `content` 末尾**（带特殊标记 `format_steer_marker`）
+3. 这样模型在下一次 API 调用时就能看到 steer 指令
+
+添加特殊的消息如下：
+
+```python
+STEER_MARKER_OPEN = "[OUT-OF-BAND USER MESSAGE — a direct message from the user, delivered mid-turn; not tool output]"
+STEER_MARKER_CLOSE = "[/OUT-OF-BAND USER MESSAGE]"
+
+
+def format_steer_marker(steer_text: str) -> str:
+    """Wrap a mid-turn steer for appending to a tool result (see module note)."""
+    return f"\n\n{STEER_MARKER_OPEN}\n{steer_text}\n{STEER_MARKER_CLOSE}"
+```
+
+
+
+#### 记忆
+
+RAG检索或者其它方式召回回来的信息如何加到对话中去 (agent/conversation_loop.py:606-649)：
+
+关于通过RAG，或者其他方式召回的信息，是通过加在了每次用户信息的尾部来实现的, **看下面的第一个代码注释，这里的msg是浅拷贝，因此只会在这一次的对话中进行了添加，但是改变原来的messages** (即这部分附加的内容不会每次都会放到上下文中，形成历史消息)
+
+```python
+api_messages = []
+for idx, msg in enumerate(messages):
+    api_msg = msg.copy()
+
+    # Inject ephemeral context into the current turn's user message.
+    # Sources: memory manager prefetch + plugin pre_llm_call hooks
+    # with target="user_message" (the default).  Both are
+    # API-call-time only — the original message in `messages` is
+    # never mutated, so nothing leaks into session persistence.
+    if idx == current_turn_user_idx and msg.get("role") == "user":
+        _injections = []
+        if _ext_prefetch_cache:
+            _fenced = build_memory_context_block(_ext_prefetch_cache)
+            if _fenced:
+                _injections.append(_fenced)
+        if _plugin_user_context:
+            _injections.append(_plugin_user_context)
+        if _injections:
+            _base = api_msg.get("content", "")
+            if isinstance(_base, str):
+                api_msg["content"] = _base + "\n\n" + "\n\n".join(_injections)
+
+    agent._copy_reasoning_content_for_api(msg, api_msg)
+
+    if "reasoning" in api_msg:
+        api_msg.pop("reasoning")
+    if "finish_reason" in api_msg:
+        api_msg.pop("finish_reason")
+    api_msg.pop("_thinking_prefill", None)
+    if agent._should_sanitize_tool_calls():
+        agent._sanitize_tool_calls_for_strict_api(api_msg, model=agent.model)
+        
+    api_messages.append(api_msg)
+
+```
+
+#### 粗略的token计算
+
+```python
+def estimate_messages_tokens_rough(messages: List[Dict[str, Any]]) -> int:
+    """Rough token estimate for a message list (pre-flight only).
+
+    Image parts (base64 PNG/JPEG) are counted as a flat ~1500 tokens per
+    image — the Anthropic pricing model — instead of counting raw base64
+    character length. Without this, a single ~1MB screenshot would be
+    estimated at ~250K tokens and trigger premature context compression.
+    """
+    _IMAGE_TOKEN_COST = 1500     # 他这里的处理方式是：粗略估计一张图片 1500 token
+    total_chars = 0
+    image_tokens = 0
+    for msg in messages:         
+        total_chars += _estimate_message_chars(msg)
+        image_tokens += _count_image_tokens(msg, _IMAGE_TOKEN_COST)
+    return ((total_chars + 3) // 4) + image_tokens              # 字符是 (n + 3) // 4
+```
+
+
+
+
+
+
+
+
+
 ## Claude Code
 
 ### System Prompt 构造
