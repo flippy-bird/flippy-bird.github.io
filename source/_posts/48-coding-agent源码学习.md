@@ -1,7 +1,7 @@
 ---
-title: claude code 源码学习
+title: Coding Agent源码学习
 date: 2026-06-02 20:23:39
-description: 记录claude code的源码学习到的东西
+description: 记录从Coding Agent源码学习到的东西
 cover: /covers/11.webp
 tags:
     - Agent
@@ -10,6 +10,105 @@ categories:
 ---
 
 
+
+## Mimo Code (6月10日)
+
+> [MiMo Code：将编程 Agent 扩展到长程任务](https://mimo.xiaomi.com/zh/blog/mimo-code-long-horizon)
+
+### 并行计划采样
+
+Max Mode 在每一轮并行生成 N 个候选方案（默认 N=5），每个候选独立完成推理和工具调用规划，但不实际执行。**然后由同一个模型作为 judge**，对比所有候选的推理过程和行动计划，选出最优的一个执行。
+
+在 SWE-Bench Pro 上，Max Mode 相比单次采样提升 10-20%，代价是约 4～5 倍的 token 消耗。
+
+
+
+### 工具调用准确性
+
+模型通过什么格式发出工具调用，直接影响准确率和 token 效率。部分模型（特别是 GPT 5.5 系列）在输出结构化 JSON 时格式错误率较高，XML 相比 JSON 效果略好。(**Token 开销大**：花括号、引号、键名重复出现，占用很多 token; **格式错误率高**：特别是某些模型，经常漏掉引号、括号不匹配，导致解析失败)
+
+小米采用的方法(6月10日的版本无这部分，到时候放出来了可以关注一下具体的做法和差异)  **我们最终发现采用受限的命令行语法**，同样的调用意图用这种格式表达所需的 token 更少，格式错误也更低，因为大部分模型在 shell 环境下的训练数据密度高。
+
+让模型输出类似：
+
+```shell
+search --query "今天北京天气" --limit 3
+```
+
+一个完整的例子如下：
+
+假设我们让模型“帮我查一下杭州明天的天气，如果下雨就提醒我带伞”。
+
+传统 JSON 工具调用，模型需要分步输出两段 JSON：
+
+```json
+{
+  "tool": "get_weather",
+  "params": {
+    "city": "杭州",
+    "date": "2026-06-16"
+  }
+}
+```
+
+收到结果后，再判断天气，然后：
+
+```json
+{
+  "tool": "send_reminder",
+  "params": {
+    "message": "明天有雨，记得带伞",
+    "time": "2026-06-15 20:00"
+  }
+}
+```
+
+#### 改用受限的命令行语法（简洁，稳健）
+
+模型可以直接输出：
+
+```shell
+get_weather --city "杭州" --date "2026-06-16"
+```
+
+收到返回的天气数据后，再输出：
+
+```shell
+send_reminder --message "明天有雨，记得带伞" --time "2026-06-15 20:00"
+```
+
+
+
+### Dynamic Workflow （大规模并行编排）
+
+当任务规模足够大（例如将整个项目从一种语言迁移到另一种语言），需要同时协调几十甚至上百个并行工作单元时，逐轮的工具调用不再够用。
+
+传统的做法是把流程写进 SKILL.md，用自然语言告诉模型"先做 A，再做 B，如果 C 就做 D"。这在简单场景下能用，但在复杂流程中会系统性失效：上下文压缩可能吞掉步骤、模型可能跳过某些环节、分支和重试逻辑靠模型判断而非代码保证、同一流程两次执行路径不同。**本质问题是：编排逻辑以自然语言存在，而自然语言是模糊的、可遗忘的、不可验证的。**
+
+Dynamic Workflow 把编排逻辑从 prompt 变成代码。主 Agent 生成一段 JavaScript 脚本，在隔离沙箱中确定性执行。
+
+
+
+### 记忆
+
+<img src="https://raw.githubusercontent.com/nashpan/image-hosting/main/image-20260615110024027.png" alt="image-20260615110024027" style="zoom: 50%;" />
+
+把会话想象成一串从左到右排开的 turn。窗口有上限，turn 在累积，窗口终会被填满。如果不干预，会话到达上限时要么结束，要么悄悄退化。
+
+运行时在到达上限之前的几个固定位置介入。我们称这些位置为 checkpoint。每个 checkpoint 处，运行时派出一个独立的 writer subagent：读取迄今的对话，将一份结构化状态写入磁盘。主 Agent 继续工作，writer 并发执行，互不干扰。
+
+主要有一个点是：  **提前压缩** ---> checkpoint 是在远低于上限处触发(20%, 45%, 70%), 主要考虑的原因是：模型在高上下文利用率下能力会衰减。这在文献中被称为 "lost in the middle"：随着输入变长，对中段材料的注意力下降，结构化提取的可靠性显著降低。因此小米采用了提前进行压缩的策略
+
+#### 四层记忆
+
+- **Session 记忆**（checkpoint.md）：只在当前逻辑会话内存活，记录这次会话的完整工作状态。
+- **Project 记忆**（MEMORY.md）：项目级持久知识——架构决定、用户规则、反复验证过的技术事实。当某条观察在多次 session checkpoint 中稳定下来，writer 将其从 session 层提升到这里。
+- **Global 记忆**：用户级偏好，跨项目生效。
+- **History**：每个会话的完整 SQLite 轨迹——每条消息、每次工具调用原文存储，不做索引。当结构化记忆中找不到某个细节时，Agent 通过 history 工具回溯到原始记录。
+
+
+
+## Claude Code
 
 ### System Prompt 构造
 
@@ -190,8 +289,6 @@ export const TIME_BASED_MC_CLEARED_MESSAGE =
 
 
 
-
-
-### 可参考资料
+## 可参考资料
 
 1. [万字长文图解 Claude Code 剖析源码：架构设计、Agent工作模式、System Prompt、记忆系统、上下文窗口管理等](https://zhuanlan.zhihu.com/p/2025176118068621451)
